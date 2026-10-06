@@ -63,9 +63,10 @@ export default function RepositoriesView({
 
 
   const filteredRepositories = useMemo(() => {
-    if (!searchQuery.trim()) return repositories
+    const list = Array.isArray(repositories) ? repositories : []
+    if (!searchQuery.trim()) return list
     const q = searchQuery.toLowerCase()
-    return repositories.filter(
+    return list.filter(
       (r) =>
         r.full_name?.toLowerCase().includes(q) ||
         r.name?.toLowerCase().includes(q) ||

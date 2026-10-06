@@ -211,7 +211,7 @@ export default function OverviewView({
                 </tr>
               </thead>
               <tbody>
-                {recentJobs.map((job) => {
+                {(Array.isArray(recentJobs) ? recentJobs : []).map((job) => {
                   const repoName = job.repositories?.full_name || job.repositories?.name || 'Repository'
                   const totalFindings = (job.critical_count || 0) + (job.high_count || 0) + (job.medium_count || 0) + (job.low_count || 0) + (job.info_count || 0)
 

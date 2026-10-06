@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
-import { api } from '@/services/api'
-import { SkeletonRow } from '@/components/common/Skeletons'
-import { modalReveal } from '@/animations/gsap'
+import { api } from '../../services/api'
+import { SkeletonRow } from '../common/Skeletons'
+import { modalReveal } from '../../animations/gsap'
 import './StartReviewModal.css'
 
 export default function StartReviewModal({
@@ -27,8 +27,16 @@ export default function StartReviewModal({
     setBranchError(null)
     try {
       const res = await api.getRepositoryBranches(repo.id)
-      const branchList = res?.data || []
+      
+      // Resiliently extract branch array across all response shapes:
+      // res.data.branches, res.data, res.branches, or empty array fallback
+      const raw = res?.data?.branches ?? res?.data ?? res?.branches ?? []
+      const branchList = Array.isArray(raw)
+        ? raw.map((b) => (typeof b === 'string' ? b : b?.name || String(b))).filter(Boolean)
+        : []
+
       setBranches(branchList)
+
       if (branchList.length > 0) {
         const defaultCandidate = repo.default_branch && branchList.includes(repo.default_branch)
           ? repo.default_branch
@@ -39,6 +47,7 @@ export default function StartReviewModal({
       }
     } catch (err) {
       console.error('[StartReviewModal] Failed to fetch branches:', err)
+      setBranches([])
       setBranchError(
         err.message || 'GitHub repository branches could not be fetched. Check repository access permissions and try again.'
       )
@@ -75,9 +84,12 @@ export default function StartReviewModal({
 
   if (!isOpen || !repo) return null
 
+  // Ensure branches is always treated as an array
+  const safeBranches = Array.isArray(branches) ? branches : []
+
   const targetBranch = useCustomBranch
     ? customBranchName.trim() || repo.default_branch || 'main'
-    : selectedBranch
+    : selectedBranch || repo.default_branch || 'main'
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -103,7 +115,7 @@ export default function StartReviewModal({
             <p className="start-review-sub">Configure pipeline parameters and target Git branch</p>
           </div>
           <button type="button" className="start-review-close-btn" onClick={onClose} title="Close">
-            ×
+            &times;
           </button>
         </div>
 
@@ -119,7 +131,7 @@ export default function StartReviewModal({
           <div className="review-repo-row secondary">
             <span className="repo-label">Language:</span>
             <span>{repo.language || 'Multi-language'}</span>
-            <span className="meta-sep">•</span>
+            <span className="meta-sep">&bull;</span>
             <span className="repo-label">Default:</span>
             <code className="code-pill branch">{repo.default_branch || 'main'}</code>
           </div>
@@ -138,7 +150,7 @@ export default function StartReviewModal({
                   className="switch-branch-mode-btn"
                   onClick={() => setUseCustomBranch(!useCustomBranch)}
                 >
-                  {useCustomBranch ? '← Choose from branch list' : 'Enter custom branch / PR ref'}
+                  {useCustomBranch ? '&larr; Choose from branch list' : 'Enter custom branch / PR ref'}
                 </button>
               )}
             </div>
@@ -161,7 +173,7 @@ export default function StartReviewModal({
               <div className="branch-error-box">
                 <div className="auth-alert error">
                   <div className="alert-content">
-                    <span className="alert-title">Branch Discovery Failed</span>
+                    <span className="alert-title">Branch Discovery Notice</span>
                     <span className="alert-message">{branchError}</span>
                   </div>
                 </div>
@@ -171,7 +183,7 @@ export default function StartReviewModal({
                     className="btn btn-secondary btn-sm"
                     onClick={loadBranches}
                   >
-                    Retry Loading Branches ↻
+                    Retry Loading Branches &#8635;
                   </button>
                   <button
                     type="button"
@@ -181,7 +193,7 @@ export default function StartReviewModal({
                       setUseCustomBranch(true)
                     }}
                   >
-                    Specify Branch Manually →
+                    Specify Branch Manually &rarr;
                   </button>
                 </div>
               </div>
@@ -205,7 +217,7 @@ export default function StartReviewModal({
                       Autonomous AST scanner will pull this ref directly from GitHub.
                     </span>
                   </div>
-                ) : branches.length === 0 ? (
+                ) : safeBranches.length === 0 ? (
                   /* Branch Empty State */
                   <div className="branch-empty-box">
                     <span className="empty-branch-text">
@@ -221,7 +233,7 @@ export default function StartReviewModal({
                       value={selectedBranch}
                       onChange={(e) => setSelectedBranch(e.target.value)}
                     >
-                      {branches.map((b) => (
+                      {safeBranches.map((b) => (
                         <option key={b} value={b}>
                           {b} {b === repo.default_branch ? '(default)' : ''}
                         </option>
@@ -247,7 +259,7 @@ export default function StartReviewModal({
               className="btn btn-primary"
               disabled={loadingBranches || !targetBranch}
             >
-              Start Review Pipeline ▶
+              Start Review Pipeline &#9654;
             </button>
           </div>
         </form>

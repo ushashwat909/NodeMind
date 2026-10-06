@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { gsap, modalReveal, scaleIn, prefersReducedMotion } from '@/animations/gsap'
-import { useToast } from '@/context/ToastContext'
+import { gsap, modalReveal, scaleIn, prefersReducedMotion } from '../../animations/gsap'
+import { useToast } from '../../context/ToastContext'
 import './ReviewProgressModal.css'
 
 const STAGES = [

@@ -23,15 +23,17 @@ export default function ReviewsView({
 
   // Sync selected review from props if passed
   useEffect(() => {
+    const list = Array.isArray(reviewJobs) ? reviewJobs : []
     if (selectedReviewId) {
       setSelectedJobId(selectedReviewId)
-    } else if (!selectedJobId && reviewJobs.length > 0) {
-      setSelectedJobId(reviewJobs[0].id)
+    } else if (!selectedJobId && list.length > 0) {
+      setSelectedJobId(list[0].id)
     }
   }, [selectedReviewId, reviewJobs, selectedJobId])
 
   const selectedJob = useMemo(() => {
-    return reviewJobs.find((j) => j.id === selectedJobId) || reviewJobs[0] || null
+    const list = Array.isArray(reviewJobs) ? reviewJobs : []
+    return list.find((j) => j.id === selectedJobId) || list[0] || null
   }, [reviewJobs, selectedJobId])
 
   // Fetch findings for the active review job
@@ -41,7 +43,8 @@ export default function ReviewsView({
       setLoadingFindings(true)
       setFindingsError(null)
       const res = await api.getReviewFindings(selectedJobId)
-      setFindings(res?.data || [])
+      const raw = res?.data?.findings ?? res?.data ?? []
+      setFindings(Array.isArray(raw) ? raw : [])
     } catch (err) {
       console.error('Error fetching findings:', err)
       setFindingsError(err.message || 'Could not load findings for this review.')
@@ -131,7 +134,7 @@ export default function ReviewsView({
           <div className="review-jobs-sidebar dev-card">
             <div className="jobs-sidebar-title">Review Runs</div>
             <div className="jobs-list-scroll">
-              {reviewJobs.map((job) => {
+              {(Array.isArray(reviewJobs) ? reviewJobs : []).map((job) => {
                 const isSelected = job.id === selectedJob?.id
                 const repoName = job.repositories?.name || job.repositories?.full_name || 'Repository'
                 return (
@@ -256,7 +259,7 @@ export default function ReviewsView({
                       <p>All scanned rules are clean for the selected severity and status criteria.</p>
                     </div>
                   ) : (
-                    filteredFindings.map((finding) => (
+                    (Array.isArray(filteredFindings) ? filteredFindings : []).map((finding) => (
                       <div key={finding.id} className="finding-card dev-card">
                         <div className="finding-header-row">
                           <div className="finding-tags">

@@ -212,7 +212,7 @@ export default function HistoryView({
                   </tr>
                 </thead>
                 <tbody ref={tbodyRef}>
-                  {historyJobs.map((job) => {
+                  {(Array.isArray(historyJobs) ? historyJobs : []).map((job) => {
                     const repoName = job.repositories?.name || job.repositories?.full_name || 'Repository'
                     return (
                       <tr key={job.id} className="dev-table-row">

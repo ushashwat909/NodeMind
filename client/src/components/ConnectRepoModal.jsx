@@ -306,9 +306,9 @@ export default function ConnectRepoModal({ isOpen, onClose, onRepositoryConnecte
                     onChange={(e) => setSelectedBranch(e.target.value)}
                     className="branch-dropdown"
                   >
-                    {(validatedData.branches && validatedData.branches.length > 0
+                    {(Array.isArray(validatedData?.branches) && validatedData.branches.length > 0
                       ? validatedData.branches
-                      : [validatedData.repository?.defaultBranch || 'main']
+                      : [validatedData?.repository?.defaultBranch || 'main']
                     ).map((branch) => (
                       <option key={branch} value={branch}>
                         {branch} {branch === validatedData.repository?.defaultBranch ? '(default)' : ''}

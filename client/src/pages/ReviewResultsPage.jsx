@@ -54,8 +54,9 @@ export default function ReviewResultsPage() {
         api.getReviewFindings(reviewId),
       ])
 
-      const reviewData = jobRes?.data || null
-      const findingsData = findingsRes?.data || []
+      const reviewData = jobRes?.data?.job || jobRes?.data || null
+      const rawFindings = findingsRes?.data?.findings ?? findingsRes?.data ?? []
+      const findingsData = Array.isArray(rawFindings) ? rawFindings : []
 
       setJob(reviewData)
       setFindings(findingsData)
