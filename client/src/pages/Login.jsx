@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { useAuth } from '../hooks/useAuth'
+import { supabase } from '../lib/supabase'
 import './Auth.css'
 
 export default function Login() {
@@ -12,7 +13,9 @@ export default function Login() {
   const [submitting, setSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [errorMsg, setErrorMsg] = useState(null)
+  const [successMsg, setSuccessMsg] = useState(null)
   const [fieldErrors, setFieldErrors] = useState({ email: false, password: false })
+  const [resendingEmail, setResendingEmail] = useState(false)
 
   const [showOauthSetupModal, setShowOauthSetupModal] = useState(false)
   const [copiedCallback, setCopiedCallback] = useState(false)
@@ -20,6 +23,28 @@ export default function Login() {
   const { signIn, signInWithOAuth, user, loading: authLoading, authError, clearError } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+
+  const handleResendConfirmation = async () => {
+    if (!email) {
+      setErrorMsg('Please enter your email address to receive a new confirmation email.')
+      return
+    }
+    setResendingEmail(true)
+    setErrorMsg(null)
+    setSuccessMsg(null)
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: email.trim(),
+      })
+      if (error) throw error
+      setSuccessMsg(`Confirmation email sent to ${email.trim()}. Please check your inbox or spam folder.`)
+    } catch (err) {
+      setErrorMsg(err.message || 'Could not resend confirmation email.')
+    } finally {
+      setResendingEmail(false)
+    }
+  }
 
   // Animation references
   const pageRef = useRef(null)
@@ -337,7 +362,39 @@ export default function Login() {
                   <line x1="12" y1="8" x2="12" y2="12" />
                   <line x1="12" y1="16" x2="12.01" y2="16" />
                 </svg>
-                <span>{getFriendlyAuthError(activeError)}</span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', flex: 1 }}>
+                  <span>{getFriendlyAuthError(activeError)}</span>
+                  {activeError?.toLowerCase().includes('not confirmed') && (
+                    <button
+                      type="button"
+                      onClick={handleResendConfirmation}
+                      disabled={resendingEmail}
+                      style={{
+                        background: 'rgba(255, 107, 74, 0.12)',
+                        border: '1px solid rgba(255, 107, 74, 0.35)',
+                        color: '#ff6b4a',
+                        padding: '0.35rem 0.65rem',
+                        borderRadius: '4px',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        alignSelf: 'flex-start',
+                        fontFamily: 'inherit',
+                      }}
+                    >
+                      {resendingEmail ? 'Sending email...' : 'Resend confirmation email ↻'}
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {successMsg && !isSuccess && (
+              <div className="auth-feedback-banner success" role="status">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span>{successMsg}</span>
               </div>
             )}
 
