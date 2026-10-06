@@ -61,6 +61,11 @@ export default function ReviewResultsPage() {
       setJob(reviewData)
       setFindings(findingsData)
 
+      // If resolved ID differs from URL parameter (e.g. fuzzy match or minor typo in URL), update URL seamlessly
+      if (reviewData?.id && reviewData.id !== reviewId) {
+        navigate(`/reviews/${reviewData.id}`, { replace: true })
+      }
+
       // Auto-select first finding if available
       if (findingsData.length > 0) {
         setSelectedFindingId((prev) => {
