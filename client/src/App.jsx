@@ -1,17 +1,17 @@
 import { lazy, Suspense } from 'react'
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
-import { AuthProvider } from '@/context/AuthContext'
-import { ToastProvider } from '@/context/ToastContext'
-import RootLayout from '@/layouts/RootLayout'
-import ProtectedRoute from '@/components/ProtectedRoute'
+import { AuthProvider } from './context/AuthContext'
+import { ToastProvider } from './context/ToastContext'
+import RootLayout from './layouts/RootLayout'
+import ProtectedRoute from './components/ProtectedRoute'
 import './App.css'
 
-const Home = lazy(() => import('@/pages/Home'))
-const Login = lazy(() => import('@/pages/Login'))
-const SignUp = lazy(() => import('@/pages/SignUp'))
-const Dashboard = lazy(() => import('@/pages/Dashboard'))
-const ReviewResultsPage = lazy(() => import('@/pages/ReviewResultsPage'))
-const NotFound = lazy(() => import('@/pages/NotFound'))
+const Home = lazy(() => import('./pages/Home'))
+const Login = lazy(() => import('./pages/Login'))
+const SignUp = lazy(() => import('./pages/SignUp'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const ReviewResultsPage = lazy(() => import('./pages/ReviewResultsPage'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
 function RouteFallback() {
   return (

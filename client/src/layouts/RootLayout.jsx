@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
-import { pageEnter } from '@/animations/gsap'
+import { pageEnter } from '../animations/gsap'
 
 /**
  * Root layout — provides the outer shell for all pages with React-safe GSAP route entrance.

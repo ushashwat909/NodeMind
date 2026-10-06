@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback, useRef } from 'react'
-import { gsap, prefersReducedMotion } from '@/animations/gsap'
-import '@/components/common/Toast.css'
+import { gsap, prefersReducedMotion } from '../animations/gsap'
+import '../components/common/Toast.css'
 
 const ToastContext = createContext(null)
 

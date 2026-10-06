@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { gsap, ScrollTrigger, prefersReducedMotion } from '@/animations/motion'
+import { gsap, prefersReducedMotion } from '@/animations/motion'
 import './HowItWorks.css'
 
 const steps = [

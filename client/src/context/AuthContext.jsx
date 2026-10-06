@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, useMemo, useCallback } from 'react'
-import { supabase } from '@/lib/supabase'
+import { supabase } from '../lib/supabase'
 
 const AuthContext = createContext(null)
 

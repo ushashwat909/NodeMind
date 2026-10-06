@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { api } from '@/services/api'
 import { SkeletonRow } from '@/components/common/Skeletons'
-import { modalReveal, prefersReducedMotion } from '@/animations/gsap'
+import { modalReveal } from '@/animations/gsap'
 import './StartReviewModal.css'
 
 export default function StartReviewModal({
