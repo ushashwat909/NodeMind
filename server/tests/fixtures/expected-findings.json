@@ -1,0 +1,52 @@
+[
+  {
+    "severity": "critical",
+    "category": "security",
+    "title": "Improper JWT Signature Verification (Unverified Decode)",
+    "file": "auth/jwt_auth.js",
+    "line_start": 8,
+    "line_end": 8,
+    "recommendation": "Replace jwt.decode() with jwt.verify() specifying trusted algorithms and keys.",
+    "cwe_id": "CWE-347"
+  },
+  {
+    "severity": "critical",
+    "category": "security",
+    "title": "SQL Injection via Untrusted Query Concatenation",
+    "file": "database/userRepository.js",
+    "line_start": 10,
+    "line_end": 10,
+    "recommendation": "Use parameterized queries ($1, ?) or an ORM query builder.",
+    "cwe_id": "CWE-89"
+  },
+  {
+    "severity": "high",
+    "category": "performance",
+    "title": "Synchronous CPU-Bound Password Hashing on Main Thread",
+    "file": "services/passwordService.js",
+    "line_start": 9,
+    "line_end": 9,
+    "recommendation": "Use asynchronous bcrypt.hash() which delegates to the Libuv worker thread pool.",
+    "cwe_id": "CWE-400"
+  },
+  {
+    "severity": "medium",
+    "category": "security",
+    "title": "Authentication Route Declared Without Rate Limiting",
+    "file": "routes/authRoutes.js",
+    "line_start": 6,
+    "line_end": 6,
+    "recommendation": "Attach express-rate-limit middleware to prevent high-frequency brute-force attempts.",
+    "cwe_id": "CWE-307"
+  },
+  {
+    "severity": "low",
+    "category": "style",
+    "title": "Development console.log() in Application Code",
+    "file": "utils/helpers.js",
+    "line_start": 6,
+    "line_end": 6,
+    "recommendation": "Use a structured logging library like pino, winston, or an application logger.",
+    "cwe_id": null
+  }
+]

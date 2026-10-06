@@ -1,0 +1,292 @@
+/* ==========================================================================
+   WHAT WE REVIEW SECTION — HORIZONTAL EDITORIAL SCROLL TRACK
+   ========================================================================== */
+
+.what-we-review-section {
+  position: relative;
+  background: #08080c;
+  color: #f8fafc;
+  padding: 8rem 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.what-we-review-header {
+  max-width: 1360px;
+  margin: 0 auto 3.5rem;
+  padding: 0 2.5rem;
+}
+
+.what-we-review-header .header-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  margin-bottom: 1.25rem;
+}
+
+.what-we-review-header .meta-index-tag {
+  color: #ff6b4a;
+  font-weight: 700;
+}
+
+.what-we-review-header .meta-sep {
+  color: #475569;
+}
+
+.what-we-review-header .meta-label {
+  color: #cbd5e1;
+}
+
+.header-flex-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.what-we-review-title {
+  margin: 0;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Inter', sans-serif);
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 850;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.header-scroll-hint {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.74rem;
+  color: #38bdf8;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+}
+
+/* Horizontal Track Wrapper */
+.horizontal-track-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.horizontal-track-container {
+  display: flex;
+  gap: 2.5rem;
+  padding: 0 2.5rem;
+  width: max-content;
+  will-change: transform;
+}
+
+/* Pillar Panel Card */
+.pillar-horizontal-panel {
+  width: 480px;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-shrink: 0;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pillar-horizontal-panel:hover {
+  background: rgba(15, 23, 42, 0.75);
+  border-color: rgba(255, 107, 74, 0.35);
+  transform: translateY(-4px);
+  box-shadow: 0 28px 64px rgba(0, 0, 0, 0.75);
+}
+
+.pillar-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pillar-giant-num {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 2.2rem;
+  font-weight: 850;
+  color: #ff6b4a;
+  letter-spacing: -0.04em;
+}
+
+.pillar-tag-pill {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+}
+
+.pillar-title {
+  margin: 0;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Inter', sans-serif);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.pillar-summary {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #94a3b8;
+}
+
+/* Code Visualizer Window */
+.pillar-code-window {
+  background: #090d14;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.code-window-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #111827;
+  padding: 0.5rem 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.window-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.window-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.code-window-file {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.68rem;
+  color: #cbd5e1;
+}
+
+.pillar-code-pre {
+  margin: 0;
+  padding: 0.85rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.76rem;
+  line-height: 1.6;
+  color: #38bdf8;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* Photo Layer */
+.pillar-photo-container {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pillar-card-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.1) brightness(0.85);
+  transition: transform 0.4s ease;
+}
+
+.pillar-horizontal-panel:hover .pillar-card-photo {
+  transform: scale(1.05);
+}
+
+.photo-dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(8, 8, 12, 0.2) 0%, rgba(8, 8, 12, 0.8) 100%);
+  pointer-events: none;
+}
+
+.pillar-stats-badge {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(13, 17, 23, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 0.35rem 0.65rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.65rem;
+  color: #cbd5e1;
+}
+
+.stats-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  flex-shrink: 0;
+}
+
+/* Mobile & Tablet Vertical Stack */
+@media (max-width: 1024px) {
+  .horizontal-track-container {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 1.75rem;
+  }
+
+  .pillar-horizontal-panel {
+    width: 100%;
+  }
+
+  .header-scroll-hint {
+    display: none;
+  }
+
+  .what-we-review-header {
+    padding: 0 1.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .what-we-review-section {
+    padding: 4.5rem 0;
+  }
+
+  .what-we-review-header {
+    padding: 0 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .horizontal-track-container {
+    padding: 0 1.25rem;
+    gap: 1.5rem;
+  }
+
+  .pillar-horizontal-panel {
+    padding: 1.75rem 1.25rem;
+  }
+}

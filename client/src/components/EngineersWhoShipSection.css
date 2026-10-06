@@ -1,0 +1,300 @@
+/* ==========================================================================
+   ENGINEERS WHO SHIP SECTION — EDITORIAL PHOTOGRAPHIC SHOWCASE
+   ========================================================================== */
+
+.engineers-section {
+  position: relative;
+  background: #08080c;
+  color: #f8fafc;
+  padding: 8rem 2.5rem;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.engineers-container {
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+/* Top Editorial Index Bar */
+.engineers-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1.5rem;
+  margin-bottom: 3.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mono-idx {
+  color: #ff6b4a;
+  font-weight: 700;
+}
+
+.mono-sep {
+  color: #475569;
+}
+
+.mono-label {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.mono-coords {
+  color: #64748b;
+}
+
+/* 65% / 35% Grid Layout */
+.engineers-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+/* Media Column (Image Frame) */
+.engineers-media-column {
+  position: relative;
+  width: 100%;
+}
+
+.engineers-image-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+  background: #0f172a;
+}
+
+.engineers-photo {
+  width: 100%;
+  height: 112%;
+  object-fit: cover;
+  object-position: center 25%;
+  transform: translateZ(0);
+  will-change: transform;
+  filter: contrast(1.08) brightness(0.92);
+  transition: filter 0.4s ease;
+}
+
+.engineers-image-frame:hover .engineers-photo {
+  filter: contrast(1.15) brightness(0.98);
+}
+
+.image-vignette-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 8, 12, 0.1) 0%,
+    rgba(8, 8, 12, 0.4) 60%,
+    rgba(8, 8, 12, 0.85) 100%
+  );
+  pointer-events: none;
+}
+
+.image-caption-pill {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(13, 17, 23, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 0.5rem 0.9rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  color: #cbd5e1;
+}
+
+.caption-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+}
+
+/* Content Column */
+.engineers-content-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.content-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+}
+
+.meta-tag-highlight {
+  color: #ff6b4a;
+  font-weight: 700;
+}
+
+.meta-tag-bullet {
+  color: #475569;
+}
+
+.engineers-main-title {
+  margin: 0;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Inter', sans-serif);
+  font-size: clamp(3rem, 5.5vw, 5.2rem);
+  font-weight: 850;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.engineers-subtext-quote {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: #f1f5f9;
+  font-weight: 500;
+  border-left: 2px solid #ff6b4a;
+  padding-left: 1.25rem;
+}
+
+.engineers-narrative {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: #94a3b8;
+}
+
+/* Metrics Strip */
+.engineers-metrics-strip {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 0.5rem;
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.metric-number {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.metric-divider {
+  width: 1px;
+  height: 2.2rem;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Action Row */
+.engineers-action-row {
+  margin-top: 0.5rem;
+}
+
+.engineers-link-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 0.35rem;
+  transition: all 0.2s ease;
+}
+
+.engineers-link-cta:hover {
+  color: #ff6b4a;
+  border-color: #ff6b4a;
+}
+
+.cta-arrow {
+  transition: transform 0.2s ease;
+}
+
+.engineers-link-cta:hover .cta-arrow {
+  transform: translateX(5px);
+}
+
+/* Responsive Adaptations */
+@media (max-width: 1024px) {
+  .engineers-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .engineers-section {
+    padding: 6rem 1.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .engineers-section {
+    padding: 4.5rem 1.25rem;
+  }
+
+  .engineers-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .engineers-metrics-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .metric-divider {
+    display: none;
+  }
+
+  .engineers-subtext-quote {
+    font-size: 1.1rem;
+  }
+}

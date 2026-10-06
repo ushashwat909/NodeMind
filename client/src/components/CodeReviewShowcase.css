@@ -1,0 +1,378 @@
+/* ==========================================================================
+   CODE REVIEW SHOWCASE COMPONENT STYLES
+   ========================================================================== */
+
+.code-review-showcase-box {
+  background: #0d1117;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+/* 1. Top File Tabs Bar */
+.showcase-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #161b22;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0 1rem;
+  overflow-x: auto;
+  gap: 1rem;
+}
+
+.showcase-tabs-group {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.showcase-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.95rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #8b949e;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.74rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.showcase-tab-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.showcase-tab-btn.is-active {
+  color: #ffffff;
+  background: #0d1117;
+  border-bottom-color: #58a6ff;
+  font-weight: 600;
+}
+
+.file-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.file-status-dot.high {
+  background: #fb923c;
+  box-shadow: 0 0 6px rgba(251, 146, 60, 0.5);
+}
+
+.file-status-dot.critical {
+  background: #f87171;
+  box-shadow: 0 0 6px rgba(248, 113, 113, 0.5);
+}
+
+.showcase-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  color: #6e7681;
+  white-space: nowrap;
+}
+
+.meta-branch-tag {
+  color: #58a6ff;
+}
+
+/* 2. Main 2-Column Split View */
+.showcase-body-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  min-height: 380px;
+}
+
+/* LEFT: Code Editor Viewport */
+.showcase-code-column {
+  background: #0d1117;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.code-header-sub {
+  padding: 0.55rem 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+}
+
+.file-crumb-path {
+  color: #c9d1d9;
+}
+
+.file-lang-pill {
+  font-size: 0.62rem;
+  color: #8b949e;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+}
+
+.code-editor-viewport {
+  padding: 0.75rem 0;
+  overflow-x: auto;
+  flex: 1;
+}
+
+.code-lines-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.editor-row {
+  transition: background-color 0.15s ease;
+}
+
+.editor-row.is-vuln-row {
+  background: rgba(239, 68, 68, 0.14);
+  border-left: 3px solid #ef4444;
+}
+
+.editor-gutter {
+  width: 50px;
+  min-width: 50px;
+  padding: 0.15rem 0.65rem 0.15rem 0.5rem;
+  text-align: right;
+  color: #6e7681;
+  user-select: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+.editor-row.is-vuln-row .editor-gutter .line-num {
+  color: #f87171;
+  font-weight: 700;
+}
+
+.vuln-indicator-bullet {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ef4444;
+}
+
+.editor-content {
+  padding: 0.15rem 0.85rem;
+  white-space: pre;
+}
+
+.code-text-line {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  color: #e6edf3;
+}
+
+/* RIGHT: Review Finding & Suggested Fix Panel */
+.showcase-finding-column {
+  background: #161b22;
+  padding: 1.25rem 1.45rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  overflow-y: auto;
+}
+
+.finding-header-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.finding-tags-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.finding-sev-pill {
+  font-size: 0.65rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  font-family: var(--font-mono, monospace);
+}
+
+.finding-sev-pill.high {
+  background: rgba(249, 115, 22, 0.18);
+  color: #fb923c;
+  border: 1px solid rgba(249, 115, 22, 0.35);
+}
+
+.finding-sev-pill.critical {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.finding-cwe-pill {
+  font-size: 0.65rem;
+  color: #8b949e;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  font-family: var(--font-mono, monospace);
+}
+
+.finding-title-text {
+  margin: 0;
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.35;
+}
+
+.finding-loc-tag {
+  font-size: 0.72rem;
+  color: #8b949e;
+  font-family: var(--font-mono, monospace);
+}
+
+/* Why It Matters */
+.finding-explanation-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-left: 0.85rem;
+  border-left: 2px solid #58a6ff;
+}
+
+.explanation-section-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #58a6ff;
+  text-transform: uppercase;
+}
+
+.explanation-paragraph {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #c9d1d9;
+  line-height: 1.5;
+}
+
+/* Suggested Mitigation Diff */
+.finding-diff-box {
+  background: #0d1117;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.diff-bar-top {
+  padding: 0.45rem 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.diff-bar-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #8b949e;
+  font-family: var(--font-mono, monospace);
+}
+
+.btn-copy-patch {
+  background: #21262d;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #58a6ff;
+  border-radius: 4px;
+  padding: 0.18rem 0.55rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  font-family: var(--font-mono, monospace);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-copy-patch:hover {
+  background: #30363d;
+  color: #ffffff;
+}
+
+.diff-stream-viewport {
+  padding: 0.5rem 0;
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-size: 0.74rem;
+}
+
+.diff-line-item {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: stretch;
+  padding: 0.15rem 0;
+  line-height: 1.45;
+}
+
+.diff-line-item.del {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+}
+
+.diff-line-item.add {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+}
+
+.diff-symbol {
+  text-align: center;
+  font-weight: 700;
+  user-select: none;
+}
+
+.diff-pre {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  white-space: pre-wrap;
+  word-break: break-all;
+  padding-right: 0.75rem;
+}
+
+/* Responsive Adaptations */
+@media (max-width: 900px) {
+  .showcase-body-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .showcase-code-column {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}

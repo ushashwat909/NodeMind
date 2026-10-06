@@ -1,0 +1,249 @@
+/* ==========================================================================
+   RECENT REVIEWS — CREATIVE STUDIO CASE STUDY ROWS
+   ========================================================================== */
+
+.recent-reviews-section {
+  background: #08080a;
+  color: #f2f2f8;
+  padding: 8rem 2.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+
+.reviews-section-container {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4.5rem;
+}
+
+/* Header */
+.reviews-header-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.title-desc-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.reviews-main-title {
+  margin: 0;
+  font-size: clamp(2.2rem, 5.5vw, 4.4rem);
+  font-weight: 850;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.reviews-header-desc {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #8b949e;
+  max-width: 480px;
+  line-height: 1.6;
+}
+
+/* Case Study Rows List */
+.case-studies-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.case-study-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  padding: 2.25rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.22s ease, border-color 0.22s ease;
+  position: relative;
+}
+
+.case-study-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Left Col */
+.case-left-col {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  flex: 1.3;
+}
+
+.case-num {
+  font-family: var(--font-mono, monospace);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #6e7681;
+  min-width: 32px;
+}
+
+.case-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.case-repo-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #f2f2f8;
+  line-height: 1.15;
+  will-change: transform, color;
+}
+
+.case-module-sub {
+  font-size: 0.85rem;
+  color: #8b949e;
+  font-weight: 500;
+}
+
+.case-code-peek {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  opacity: 0;
+  transform: translateY(4px);
+  will-change: opacity, transform;
+}
+
+.peek-prefix {
+  color: #fb923c;
+  font-weight: 700;
+}
+
+.peek-code {
+  color: #c9d1d9;
+}
+
+/* Middle Col */
+.case-metrics-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.case-findings-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+}
+
+.case-verdict-pill {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  width: fit-content;
+}
+
+.case-verdict-pill.passed {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.case-verdict-pill.failed {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.case-tags-group {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.case-tag-item {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.64rem;
+  color: #6e7681;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+}
+
+/* Right Col */
+.case-right-col {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.case-year-text {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  color: #6e7681;
+}
+
+.case-arrow-icon {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #8b949e;
+  line-height: 1;
+  display: inline-block;
+  will-change: transform, color;
+}
+
+/* Responsive Adaptations */
+@media (max-width: 960px) {
+  .case-study-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .case-right-col {
+    width: 100%;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+  }
+}
+
+@media (max-width: 640px) {
+  .recent-reviews-section {
+    padding: 5rem 1.5rem;
+  }
+
+  .case-left-col {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .case-repo-title {
+    font-size: 1.45rem;
+  }
+
+  .case-code-peek {
+    display: none;
+  }
+}

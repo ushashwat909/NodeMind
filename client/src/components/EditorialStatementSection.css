@@ -1,0 +1,121 @@
+/* ==========================================================================
+   EDITORIAL STATEMENT SECTION — MONUMENTAL TYPOGRAPHY
+   ========================================================================== */
+
+.editorial-statement-section {
+  position: relative;
+  background: #08080c;
+  color: #f8fafc;
+  padding: 10rem 2.5rem;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.statement-container {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.statement-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+}
+
+.statement-tag {
+  color: #ff6b4a;
+  font-weight: 700;
+}
+
+.statement-sep {
+  color: #475569;
+}
+
+.statement-meta {
+  color: #cbd5e1;
+}
+
+.statement-large-headline {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Inter', sans-serif);
+  font-size: clamp(3.6rem, 8.5vw, 8.4rem);
+  font-weight: 850;
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+.statement-line {
+  display: block;
+  opacity: 1; /* Always readable in base CSS */
+}
+
+.statement-line.accent-line {
+  color: #ff6b4a;
+  background: linear-gradient(135deg, #ff7b54 0%, #ff5238 60%, #ffa07a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 24px rgba(255, 107, 74, 0.3));
+}
+
+.statement-subtext-block {
+  margin-top: 3.5rem;
+  max-width: 620px;
+  border-left: 2px solid rgba(255, 255, 255, 0.15);
+  padding-left: 1.5rem;
+}
+
+.statement-subtext {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  font-weight: 450;
+}
+
+/* Responsive Adaptations */
+@media (max-width: 1024px) {
+  .editorial-statement-section {
+    padding: 7.5rem 1.75rem;
+  }
+
+  .statement-large-headline {
+    font-size: clamp(3.2rem, 8vw, 6.2rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .editorial-statement-section {
+    padding: 5rem 1.25rem;
+  }
+
+  .statement-large-headline {
+    font-size: clamp(2.6rem, 10vw, 4rem);
+    letter-spacing: -0.03em;
+  }
+
+  .statement-subtext-block {
+    margin-top: 2.25rem;
+  }
+
+  .statement-subtext {
+    font-size: 1rem;
+  }
+}
