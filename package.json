@@ -4,6 +4,8 @@
   "private": true,
   "description": "AI-powered code review agent with Supabase backend",
   "scripts": {
+    "start": "node server/src/index.js",
+    "start:server": "npm run start --prefix server",
     "dev": "concurrently -n client,server -c cyan,green \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "npm run dev --prefix client",
     "dev:server": "npm run dev --prefix server",

@@ -17,6 +17,7 @@ app.use(securityHeaders)
 const isAllowedOrigin = (origin) => {
   if (!origin) return true
   if (origin === config.clientUrl) return true
+  if (/^https:\/\/.*\.netlify\.app$/.test(origin)) return true
   if (!config.isProduction && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
     return true
   }
@@ -61,22 +62,27 @@ let server = null
 
 import { fileURLToPath } from 'node:url'
 
-const isMainScript = process.argv[1] && (
-  fileURLToPath(import.meta.url) === process.argv[1] ||
-  process.argv[1].endsWith('src\\index.js') ||
-  process.argv[1].endsWith('src/index.js')
+const isMainScript = Boolean(
+  process.argv[1] && (
+    fileURLToPath(import.meta.url) === process.argv[1] ||
+    process.argv[1].endsWith('src/index.js') ||
+    process.argv[1].endsWith('src\\index.js') ||
+    process.argv[1].includes('index.js')
+  )
 )
 
 if (isMainScript && process.env.NODE_ENV !== 'test') {
-  server = app.listen(config.port, () => {
+  const host = '0.0.0.0'
+  server = app.listen(config.port, host, () => {
     logger.info(`
   ┌──────────────────────────────────────────────┐
   │  Code Review Agent — API Backend             │
+  │  Host:        ${host.padEnd(31)}│
   │  Port:        ${String(config.port).padEnd(31)}│
   │  Env:         ${config.nodeEnv.padEnd(31)}│
-  │  Health:      http://localhost:${config.port}/api/health     │
-  │  Repositories:http://localhost:${config.port}/api/repositories │
-  │  Reviews:     http://localhost:${config.port}/api/reviews    │
+  │  Health:      http://${host}:${config.port}/api/health │
+  │  Repositories:http://${host}:${config.port}/api/repositories │
+  │  Reviews:     http://${host}:${config.port}/api/reviews │
   └──────────────────────────────────────────────┘
     `)
   })
