@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { prefersReducedMotion } from '@/animations/motion'
@@ -9,7 +9,7 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-export default function EditorialHero() {
+export default function EditorialHero({ onOpenGlimpse }) {
   const containerRef = useRef(null)
   const bgImageRef = useRef(null)
   const heroPosterRef = useRef(null)
@@ -21,6 +21,15 @@ export default function EditorialHero() {
   const metaBottomRef = useRef(null)
   const ctaGroupRef = useRef(null)
   const [copiedCli, setCopiedCli] = useState(false)
+  const navigate = useNavigate()
+
+  const handleGlimpseClick = () => {
+    if (onOpenGlimpse) {
+      onOpenGlimpse()
+    } else {
+      navigate('/glimpse')
+    }
+  }
 
   const handleCopyCli = () => {
     navigator.clipboard.writeText('npx @codereview/agent review .')
@@ -176,6 +185,17 @@ export default function EditorialHero() {
               <span>START CODE REVIEW</span>
               <span className="hero-btn-arrow">→</span>
             </Link>
+
+            <button
+              type="button"
+              className="hero-btn-glimpse"
+              onClick={handleGlimpseClick}
+              aria-label="Experience NodeMind 3D Glimpse"
+            >
+              <span className="glimpse-sparkle-dot">✦</span>
+              <span className="hero-glimpse-text">GLIMPSE</span>
+              <span className="hero-glimpse-badge">3D PREVIEW</span>
+            </button>
 
             <button
               type="button"

@@ -11,6 +11,7 @@ const Login = lazy(() => import('./pages/Login'))
 const SignUp = lazy(() => import('./pages/SignUp'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const ReviewResultsPage = lazy(() => import('./pages/ReviewResultsPage'))
+const GlimpsePage = lazy(() => import('./pages/GlimpsePage'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 function RouteFallback() {
@@ -91,6 +92,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<RouteFallback />}>
             <SignUp />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'glimpse',
+        element: (
+          <Suspense fallback={<RouteFallback />}>
+            <GlimpsePage />
           </Suspense>
         ),
       },

@@ -5,13 +5,21 @@ import { prefersReducedMotion } from '@/animations/motion'
 import { supabase } from '@/lib/supabase'
 import './EditorialNavigation.css'
 
-export default function EditorialNavigation() {
+export default function EditorialNavigation({ onOpenGlimpse }) {
   const [session, setSession] = useState(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const overlayRef = useRef(null)
   const menuLinksRef = useRef(null)
   const navigate = useNavigate()
+
+  const handleGlimpseClick = () => {
+    if (onOpenGlimpse) {
+      onOpenGlimpse()
+    } else {
+      navigate('/glimpse')
+    }
+  }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -125,6 +133,18 @@ export default function EditorialNavigation() {
 
           {/* Desktop Actions */}
           <div className="editorial-nav-actions">
+            {/* GLIMPSE Interactive 3D Preview Button */}
+            <button
+              type="button"
+              className="editorial-btn-glimpse"
+              onClick={handleGlimpseClick}
+              aria-label="Open Glimpse Interactive 3D Preview"
+            >
+              <span className="glimpse-sparkle">✦</span>
+              <span className="glimpse-label">GLIMPSE</span>
+              <span className="glimpse-pill-badge">3D</span>
+            </button>
+
             {session ? (
               <Link to="/dashboard" className="editorial-btn-primary">
                 <span>DASHBOARD</span>
@@ -227,13 +247,24 @@ export default function EditorialNavigation() {
           </button>
           <button
             type="button"
+            className="mobile-menu-item mobile-glimpse-item"
+            onClick={() => {
+              setMobileMenuOpen(false)
+              handleGlimpseClick()
+            }}
+          >
+            <span className="item-num">✦</span>
+            <span className="item-text">GLIMPSE // 3D PREVIEW</span>
+          </button>
+          <button
+            type="button"
             className="mobile-menu-item"
             onClick={() => {
               setMobileMenuOpen(false)
               navigate(session ? '/dashboard' : '/login')
             }}
           >
-            <span className="item-num">05</span>
+            <span className="item-num">06</span>
             <span className="item-text">{session ? 'WORKSPACE' : 'SIGN IN'}</span>
           </button>
         </nav>

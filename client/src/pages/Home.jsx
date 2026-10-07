@@ -1,10 +1,11 @@
-import { useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Lenis from 'lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { prefersReducedMotion } from '@/animations/motion'
 import EditorialNavigation from '@/components/EditorialNavigation'
 import EditorialHero from '@/components/EditorialHero'
+import GlimpseExperience from '@/components/glimpse/GlimpseExperience'
 import EngineersWhoShipSection from '@/components/EngineersWhoShipSection'
 import EditorialStatementSection from '@/components/EditorialStatementSection'
 import FromCodeToReviewSection from '@/components/FromCodeToReviewSection'
@@ -22,6 +23,28 @@ if (typeof window !== 'undefined') {
 }
 
 export default function Home() {
+  const [isGlimpseOpen, setIsGlimpseOpen] = useState(false)
+  const lenisRef = useRef(null)
+
+  // Check URL query or hash for direct link
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('preview') === 'glimpse' || window.location.hash === '#glimpse') {
+      setIsGlimpseOpen(true)
+    }
+  }, [])
+
+  // Pause Lenis background scroll while Glimpse overlay is open
+  useEffect(() => {
+    if (!lenisRef.current) return
+    if (isGlimpseOpen) {
+      lenisRef.current.stop()
+    } else {
+      lenisRef.current.start()
+    }
+  }, [isGlimpseOpen])
+
   useEffect(() => {
     if (typeof window === 'undefined' || prefersReducedMotion()) return
 
@@ -32,6 +55,7 @@ export default function Home() {
       wheelMultiplier: 0.95,
       touchMultiplier: 1.8,
     })
+    lenisRef.current = lenis
 
     // Synchronize Lenis scroll updates with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update)
@@ -51,17 +75,32 @@ export default function Home() {
       clearTimeout(refreshTimer)
       gsap.ticker.remove(tickerCallback)
       lenis.destroy()
+      lenisRef.current = null
     }
   }, [])
 
+  const handleOpenGlimpse = () => {
+    setIsGlimpseOpen(true)
+  }
+
+  const handleCloseGlimpse = () => {
+    setIsGlimpseOpen(false)
+    if (window.location.hash === '#glimpse') {
+      window.history.replaceState(null, '', window.location.pathname)
+    }
+  }
+
   return (
     <div className="landing-page-root">
+      {/* 0. IMMERSIVE GLIMPSE ARCHITECTURE EXPERIENCE OVERLAY */}
+      <GlimpseExperience isOpen={isGlimpseOpen} onClose={handleCloseGlimpse} />
+
       {/* 1. MINIMAL EDITORIAL NAVIGATION */}
-      <EditorialNavigation />
+      <EditorialNavigation onOpenGlimpse={handleOpenGlimpse} />
 
       <main id="main-content">
         {/* 2. SIGNATURE EDITORIAL HERO + CONTINUOUS PARALLAX DEPTH */}
-        <EditorialHero />
+        <EditorialHero onOpenGlimpse={handleOpenGlimpse} />
 
         {/* 3. LARGE PHOTOGRAPHIC SECTION: ENGINEERS WHO SHIP */}
         <EngineersWhoShipSection />

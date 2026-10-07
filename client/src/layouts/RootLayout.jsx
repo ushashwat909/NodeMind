@@ -11,7 +11,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (mainRef.current) {
-      if (location.pathname === '/') {
+      if (location.pathname === '/' || location.pathname === '/glimpse') {
         mainRef.current.style.transform = ''
         return
       }
