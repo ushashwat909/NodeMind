@@ -69,15 +69,34 @@ export function AuthProvider({ children }) {
   }, [])
 
 
-  // Sign in with email and password
+  // Sign in with email and password (with auto-confirm resilience)
   const signIn = useCallback(async ({ email, password }) => {
     setAuthError(null)
     setLoading(true)
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
+      const cleanEmail = email.trim()
+      let { data, error } = await supabase.auth.signInWithPassword({
+        email: cleanEmail,
         password,
       })
+
+      // If email is not confirmed, automatically confirm it via RPC and retry immediately
+      if (error && error.message?.toLowerCase().includes('not confirmed')) {
+        try {
+          await supabase.rpc('confirm_user_email', { p_email: cleanEmail })
+          const retry = await supabase.auth.signInWithPassword({
+            email: cleanEmail,
+            password,
+          })
+          if (!retry.error && retry.data?.session) {
+            data = retry.data
+            error = null
+          }
+        } catch (confirmErr) {
+          console.warn('[Auth] Auto-confirm error:', confirmErr.message)
+        }
+      }
+
       if (error) {
         setAuthError(error.message)
         return { success: false, error: error.message }
@@ -94,73 +113,81 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
-  // Sign up new user
+  // Sign up new user with instant auto-confirmation and immediate dashboard access
   const signUp = useCallback(async ({ email, password, fullName }) => {
     setAuthError(null)
     setLoading(true)
     try {
       const cleanEmail = email.trim()
 
-      // 1. Try standard Supabase signup first
-      let { data, error } = await supabase.auth.signUp({
-        email: cleanEmail,
-        password,
-        options: {
-          data: fullName ? { full_name: fullName } : {},
-          emailRedirectTo: `${window.location.origin}/dashboard`,
-        },
-      })
-
-      // 2. If rate limited on email confirmation (Supabase free tier 3-4 emails/hr limit),
-      // seamlessly execute verified direct registration
-      const isRateLimited = error && (
-        error.message?.toLowerCase().includes('rate limit') ||
-        error.message?.toLowerCase().includes('email rate limit') ||
-        error.status === 429
-      )
-
-      if (isRateLimited) {
-        console.info('[Auth] Email rate limit encountered on built-in SMTP. Creating verified developer account via RPC...')
+      // Primary: Create auto-confirmed account directly via RPC
+      let registered = false
+      try {
         const rpcRes = await supabase.rpc('register_user', {
           p_email: cleanEmail,
           p_password: password,
           p_full_name: fullName || '',
         })
 
-        if (rpcRes.error) {
-          throw new Error(rpcRes.error.message || 'Registration failed')
+        if (rpcRes.data?.success) {
+          registered = true
+        } else if (rpcRes.data?.error?.includes('already exists')) {
+          const existsMsg = 'An account with this email already exists. Please sign in instead.'
+          setAuthError(existsMsg)
+          return { success: false, error: existsMsg }
         }
+      } catch (rpcErr) {
+        console.warn('[Auth] Direct register_user RPC fallback:', rpcErr.message)
+      }
 
-        if (!rpcRes.data?.success) {
-          throw new Error(rpcRes.data?.error || 'Registration failed')
-        }
-
-        // Instantly sign in to obtain active JWT session
-        const loginRes = await supabase.auth.signInWithPassword({
+      // If RPC didn't complete, execute standard signup + auto-confirm
+      if (!registered) {
+        const { error: signUpError } = await supabase.auth.signUp({
           email: cleanEmail,
           password,
+          options: {
+            data: fullName ? { full_name: fullName } : {},
+            emailRedirectTo: `${window.location.origin}/dashboard`,
+          },
         })
 
-        if (loginRes.error) {
-          throw loginRes.error
+        if (signUpError) {
+          const friendlyMessage = signUpError.message?.includes('already registered')
+            ? 'An account with this email already exists. Please sign in instead.'
+            : signUpError.message
+          setAuthError(friendlyMessage)
+          return { success: false, error: friendlyMessage }
         }
 
-        data = loginRes.data
-        error = null
-      } else if (error) {
-        const friendlyMessage = error.message?.includes('already registered')
-          ? 'An account with this email already exists. Please sign in instead.'
-          : error.message
-        setAuthError(friendlyMessage)
-        return { success: false, error: friendlyMessage }
+        // Auto-confirm the newly created user in Postgres
+        await supabase.rpc('confirm_user_email', { p_email: cleanEmail })
       }
 
-      // If session returned immediately (auto-confirm or instant verified session)
-      if (data?.session) {
-        setSession(data.session)
-        setUser(data.user)
+      // Instantly sign in to obtain active JWT session and redirect to dashboard
+      const loginRes = await supabase.auth.signInWithPassword({
+        email: cleanEmail,
+        password,
+      })
+
+      if (loginRes.error) {
+        if (loginRes.error.message?.toLowerCase().includes('not confirmed')) {
+          await supabase.rpc('confirm_user_email', { p_email: cleanEmail })
+          const retryRes = await supabase.auth.signInWithPassword({
+            email: cleanEmail,
+            password,
+          })
+          if (retryRes.data?.session) {
+            setSession(retryRes.data.session)
+            setUser(retryRes.data.user)
+            return { success: true, data: retryRes.data }
+          }
+        }
+        throw loginRes.error
       }
-      return { success: true, data }
+
+      setSession(loginRes.data.session)
+      setUser(loginRes.data.user)
+      return { success: true, data: loginRes.data }
     } catch (err) {
       const message = err.message || 'Registration failed. Please check your details.'
       setAuthError(message)

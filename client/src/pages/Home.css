@@ -8,10 +8,11 @@
   flex-direction: column;
   position: relative;
   background-color: var(--color-bg-primary);
+  overflow-x: clip;
 }
 
 #main-content {
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  display: block;
+  position: relative;
 }

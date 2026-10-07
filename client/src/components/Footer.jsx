@@ -54,7 +54,7 @@ export default function Footer() {
                   <circle cx="12" cy="12" r="2.5" fill="currentColor"></circle>
                 </svg>
               </div>
-              <span className="footer-brand-title">Code Review Agent</span>
+              <span className="footer-brand-title">NodeMind</span>
             </Link>
             <p className="footer-tagline">
               Autonomous AST-grade static and semantic code analysis. Surfaces actionable inline fixes before pull requests merge.
@@ -113,7 +113,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="footer-bottom-bar">
           <p className="footer-copyright">
-            &copy; 2026 Code Review Agent. Powered by Supabase, Express &amp; React.
+            &copy; 2026 NodeMind. Powered by Supabase, Express &amp; React.
           </p>
           <div className="footer-tech-stack">
             <span>TypeScript</span>

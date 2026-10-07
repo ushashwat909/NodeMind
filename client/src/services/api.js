@@ -1,11 +1,48 @@
 import { supabase } from '@/lib/supabase'
 
-const configuredBase = (
-  import.meta.env.VITE_API_URL ||
-  (import.meta.env.DEV ? 'http://localhost:3001' : '')
-).replace(/\/+$/, '')
+/**
+ * Dynamically resolves the API base URL:
+ * 1. In development:
+ *    - Defaults to relative '' so requests route through Vite's dev server proxy (/api -> :3001).
+ *      This works identically whether accessed via localhost, 127.0.0.1, LAN IP (e.g. 192.168.x.x),
+ *      or any other laptop or mobile device on the network.
+ *    - If VITE_API_URL contains localhost/127.0.0.1 but the page is opened from another machine,
+ *      we avoid pointing the remote client to its own localhost and route through Vite proxy.
+ * 2. In production:
+ *    - Uses VITE_API_URL if configured, otherwise relative ''.
+ */
+function resolvePrimaryBase() {
+  const envUrl = (import.meta.env.VITE_API_URL || '').trim().replace(/\/+$/, '')
 
-const defaultDirect = 'http://localhost:3001'
+  if (typeof window !== 'undefined') {
+    const isLocalhostHost =
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname === '[::1]'
+
+    // Remote device accessing over LAN: avoid pointing to client device's localhost
+    if (!isLocalhostHost && (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(envUrl) || !envUrl)) {
+      return ''
+    }
+  }
+
+  // In development, empty or localhost URL uses Vite dev proxy relative ''
+  if (import.meta.env.DEV) {
+    if (!envUrl || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(envUrl)) {
+      return ''
+    }
+  }
+
+  return envUrl
+}
+
+function resolveDirectFallback() {
+  if (typeof window !== 'undefined' && window.location.hostname) {
+    // Points to port 3001 of the host machine that served the page
+    return `http://${window.location.hostname}:3001`
+  }
+  return 'http://127.0.0.1:3001'
+}
 
 /**
  * Retrieves the active session token to authenticate backend API calls
@@ -65,7 +102,7 @@ async function tryFetch(baseUrl, endpoint, options, authHeaders) {
  */
 async function request(endpoint, options = {}) {
   const authHeaders = await getAuthHeaders()
-  const primaryBase = configuredBase || ''
+  const primaryBase = resolvePrimaryBase()
 
   try {
     return await tryFetch(primaryBase, endpoint, options, authHeaders)
@@ -75,12 +112,15 @@ async function request(endpoint, options = {}) {
       throw primaryErr
     }
 
-    // Try dev direct localhost fallback if relative or remote failed in development
-    if (import.meta.env.DEV && primaryBase !== defaultDirect) {
-      try {
-        return await tryFetch(defaultDirect, endpoint, options, authHeaders)
-      } catch {
-        // Fall back to original error
+    // Try dev direct host fallback if relative proxy failed in development
+    if (import.meta.env.DEV) {
+      const fallbackBase = resolveDirectFallback()
+      if (primaryBase !== fallbackBase) {
+        try {
+          return await tryFetch(fallbackBase, endpoint, options, authHeaders)
+        } catch {
+          // Fall back to original error
+        }
       }
     }
 

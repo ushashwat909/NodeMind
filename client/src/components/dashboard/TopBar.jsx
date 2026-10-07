@@ -6,6 +6,7 @@ export default function TopBar({
   loadingData,
   profile,
   user,
+  onShowIntro,
 }) {
   const tabTitles = {
     overview: 'Overview',
@@ -38,9 +39,28 @@ export default function TopBar({
           <span className="breadcrumb-sep">/</span>
           <span className="breadcrumb-current">{tabTitles[activeTab] || 'Overview'}</span>
         </div>
+
+        {/* Live Kernel Telemetry Pill */}
+        <div className="topbar-kernel-pill">
+          <span className="kernel-dot" />
+          <span className="kernel-text">KERNEL V2.4 ONLINE</span>
+        </div>
       </div>
 
       <div className="topbar-right">
+        {/* Iconic We Are NodeMind 3D Experience Button */}
+        {onShowIntro && (
+          <button
+            type="button"
+            className="topbar-intro-trigger-btn"
+            onClick={onShowIntro}
+            title="Experience the 3D 'WE ARE NODEMIND' cinematic intro"
+          >
+            <span className="intro-btn-lightning">⚡</span>
+            <span className="intro-btn-text">WE ARE NODEMIND</span>
+          </button>
+        )}
+
         {/* Live Refresh Trigger */}
         <button
           type="button"

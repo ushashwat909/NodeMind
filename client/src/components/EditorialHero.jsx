@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { prefersReducedMotion } from '@/animations/motion'
-import CodeReviewShowcase from './CodeReviewShowcase'
 import './EditorialHero.css'
 
 if (typeof window !== 'undefined') {
@@ -21,7 +20,6 @@ export default function EditorialHero() {
   const metaTopRef = useRef(null)
   const metaBottomRef = useRef(null)
   const ctaGroupRef = useRef(null)
-  const codeRevealRef = useRef(null)
   const [copiedCli, setCopiedCli] = useState(false)
 
   const handleCopyCli = () => {
@@ -43,18 +41,17 @@ export default function EditorialHero() {
     const metaTop = metaTopRef.current
     const metaBottom = metaBottomRef.current
     const ctaGroup = ctaGroupRef.current
-    const codeReveal = codeRevealRef.current
 
-    if (!container || !heroPoster || !line1 || !codeReveal) return
+    if (!container || !heroPoster || !line1) return
 
     const ctx = gsap.context(() => {
-      // 1. Initial Page Load Entrance (Enhancement only; base CSS is already 100% readable)
+      // 1. Initial Page Load Entrance Animation
       const introTl = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
       if (bgImage) {
         introTl.fromTo(
           bgImage,
-          { scale: 1.08, opacity: 0.6 },
+          { scale: 1.08, opacity: 0.5 },
           { scale: 1, opacity: 1, duration: 1.2, ease: 'power2.out' },
           0
         )
@@ -65,93 +62,55 @@ export default function EditorialHero() {
         .fromTo(
           [line1, line2, line3, line4],
           { y: 40, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.7, stagger: 0.07 },
+          { y: 0, opacity: 1, duration: 0.7, stagger: 0.08 },
           0.2
         )
         .fromTo(ctaGroup, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5 }, 0.45)
-        .fromTo(metaBottom, { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0.5)
+        .fromTo(metaBottom, { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0.55)
 
-      // 2. Responsive ScrollTrigger Transition
-      const isMobile = window.innerWidth <= 768
+      // 2. Continuous Parallax Scroll scrub (smooth progression into section 01 without freezing or collisions)
+      const scrollTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 0.8,
+          invalidateOnRefresh: true,
+        },
+      })
 
-      if (isMobile) {
-        // Mobile: Clean, natural vertical reveal without pinning
-        gsap.fromTo(
-          codeReveal,
-          { opacity: 0, y: 30 },
+      scrollTl
+        .to(
+          bgImage,
           {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: codeReveal,
-              start: 'top 85%',
-              once: true,
-            },
-          }
-        )
-      } else {
-        // Desktop: Signature Cinematic Scroll Transition
-        // Big text gently elevates and docks, photo pans, and code review finding surfaces prominently
-        const scrollTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: container,
-            start: 'top top',
-            end: '+=90%',
-            pin: true,
-            scrub: 0.65,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
+            scale: 1.15,
+            y: '10%',
+            filter: 'brightness(0.3) blur(3px)',
+            ease: 'none',
           },
-        })
-
-        scrollTl
-          // Background photo pans and zooms subtly into the workstation
-          .to(
-            bgImage,
-            {
-              scale: 1.06,
-              x: '-2%',
-              y: '-2%',
-              filter: 'brightness(0.35) blur(2px)',
-              ease: 'power1.inOut',
-            },
-            0
-          )
-          // Headline elevates into a docked eyebrow banner (keeps high contrast and readability)
-          .to(
-            heroPoster,
-            {
-              y: -85,
-              scale: 0.88,
-              opacity: 0.85,
-              ease: 'power1.inOut',
-            },
-            0
-          )
-          // Dim secondary CTA buttons & scroll prompt as code review inspector rises
-          .to([ctaGroup, metaBottom], { opacity: 0, y: -15, ease: 'power1.in' }, 0)
-          // Code Review interface rises into center stage with crisp focus
-          .fromTo(
-            codeReveal,
-            {
-              opacity: 0,
-              y: 100,
-              scale: 0.94,
-            },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              ease: 'power2.out',
-            },
-            0.18
-          )
-      }
+          0
+        )
+        .to(
+          heroPoster,
+          {
+            y: -60,
+            opacity: 0.25,
+            scale: 0.96,
+            ease: 'none',
+          },
+          0
+        )
+        .to(
+          [ctaGroup, metaBottom],
+          {
+            opacity: 0,
+            y: -30,
+            ease: 'none',
+          },
+          0
+        )
     }, containerRef)
 
-    // Ensure ScrollTrigger recalculates after fonts / images load
     const refreshTimer = setTimeout(() => {
       ScrollTrigger.refresh()
     }, 400)
@@ -181,7 +140,7 @@ export default function EditorialHero() {
       {/* 2. Top Contextual Micro-Header */}
       <div ref={metaTopRef} className="hero-context-top">
         <div className="context-left">
-          <span className="context-tag">CODE REVIEW AGENT</span>
+          <span className="context-tag">NODEMIND</span>
           <span className="context-sep">/</span>
           <span className="context-desc">AUTOMATED REPOSITORY ANALYSIS</span>
         </div>
@@ -238,24 +197,16 @@ export default function EditorialHero() {
         </div>
       </div>
 
-      {/* 4. Editorial Scroll Prompt */}
+      {/* 4. Editorial Context Bottom Bar */}
       <div ref={metaBottomRef} className="hero-scroll-prompt">
-        <span className="prompt-label">SCROLL TO EXPLORE</span>
-        <span className="prompt-arrow">↓</span>
-        <span className="prompt-meta">AUTONOMOUS AST AUDITING</span>
-      </div>
-
-      {/* 5. Signature Code Review Reveal Interface (ENGINEER → CODE → REVIEW → FINDING) */}
-      <div ref={codeRevealRef} className="hero-code-reveal-wrapper" id="code-showcase">
-        <div className="reveal-badge-header">
-          <div className="reveal-badge-left">
-            <span className="reveal-tag">ENGINEER → CODE → REVIEW → FINDING</span>
-            <span className="reveal-sep">/</span>
-            <span className="reveal-desc">LIVE WORKSPACE REVEAL</span>
-          </div>
-          <span className="reveal-meta">HIGH-CONFIDENCE AST INSPECTOR</span>
+        <div className="prompt-left">
+          <span className="pulse-dot-orange" />
+          <span className="prompt-meta">IN-MEMORY AST EVALUATION · ZERO DISK PERSISTENCE · ALL BRANCHES</span>
         </div>
-        <CodeReviewShowcase />
+        <div className="prompt-right">
+          <span className="prompt-label">SCROLL TO EXPLORE</span>
+          <span className="prompt-arrow">↓</span>
+        </div>
       </div>
     </section>
   )

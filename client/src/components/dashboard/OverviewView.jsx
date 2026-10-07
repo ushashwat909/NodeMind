@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TableSkeleton, MetricsSkeleton } from '@/components/common/Skeletons'
 import gsap from 'gsap'
 import { staggerReveal, prefersReducedMotion } from '@/animations/motion'
+import './OverviewView.css'
 
 export default function OverviewView({
   metrics,
@@ -16,9 +17,35 @@ export default function OverviewView({
   triggeringReviewId,
   onSelectReview,
   onNavigateToTab,
+  onShowIntro,
+  userName = 'Architect',
 }) {
   const navigate = useNavigate()
   const containerRef = useRef(null)
+  const cardRefs = useRef([])
+
+  // Interactive 3D mouse tilt on metric cards
+  const handleCardMouseMove = useCallback((e, index) => {
+    const card = cardRefs.current[index]
+    if (!card) return
+    const rect = card.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    const centerX = rect.width / 2
+    const centerY = rect.height / 2
+    const rotateX = ((y - centerY) / centerY) * -8
+    const rotateY = ((x - centerX) / centerX) * 8
+
+    card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`
+    card.style.setProperty('--mouse-x', `${(x / rect.width) * 100}%`)
+    card.style.setProperty('--mouse-y', `${(y / rect.height) * 100}%`)
+  }, [])
+
+  const handleCardMouseLeave = useCallback((index) => {
+    const card = cardRefs.current[index]
+    if (!card) return
+    card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)'
+  }, [])
 
   useEffect(() => {
     if (loadingData || !containerRef.current || prefersReducedMotion()) return
@@ -27,9 +54,9 @@ export default function OverviewView({
       const elements = containerRef.current.querySelectorAll('.animate-fade-in')
       if (elements.length > 0) {
         staggerReveal(elements, {
-          y: 10,
-          duration: 0.3,
-          stagger: 0.045,
+          y: 12,
+          duration: 0.35,
+          stagger: 0.05,
           ease: 'power2.out',
         })
       }
@@ -50,94 +77,151 @@ export default function OverviewView({
 
   return (
     <div className="overview-view" ref={containerRef}>
-      {/* Metrics Row */}
+      {/* 1. Command Telemetry Banner */}
+      <div className="overview-command-banner animate-fade-in">
+        <div className="banner-telemetry-left">
+          <span className="banner-meta-tag">// MISSION CONTROL · US-EAST-SECURE</span>
+          <h1 className="banner-heading-title">
+            WORKSPACE COMMAND <span className="banner-user-greet">// {userName.toUpperCase()}</span>
+          </h1>
+          <div className="banner-badges-strip">
+            <span className="telemetry-chip">
+              <span className="chip-dot-green" />
+              AST KERNEL: V2.4 ONLINE
+            </span>
+            <span className="telemetry-chip">
+              🛡️ ZERO RETENTION: EPHEMERAL RAM
+            </span>
+            <span className="telemetry-chip">
+              ⚡ 142 OWASP HEURISTICS: ARMED
+            </span>
+          </div>
+        </div>
+
+        <div className="banner-actions-right">
+          {onShowIntro && (
+            <button
+              type="button"
+              className="banner-replay-btn"
+              onClick={onShowIntro}
+              title="Experience the 3D 'WE ARE NODEMIND' cinematic intro"
+            >
+              <span>⚡</span>
+              <span>WE ARE NODEMIND</span>
+            </button>
+          )}
+
+          <button
+            type="button"
+            className="btn btn-primary btn-sm"
+            onClick={onOpenConnectModal}
+          >
+            + Connect Repo
+          </button>
+        </div>
+      </div>
+
+      {/* 2. 3D Cyber-Metrics Grid */}
       {loadingData ? (
         <MetricsSkeleton count={4} />
       ) : (
-        <div className="overview-metrics-grid">
+        <div className="cyber-metrics-grid animate-fade-in">
           {/* Metric 1: Repositories */}
-          <div className="overview-metric-card animate-fade-in">
-            <div className="metric-header">
-              <span className="metric-title">Connected Repos</span>
-              <span className="metric-icon-wrap neutral">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
-                </svg>
-              </span>
+          <div
+            ref={(el) => (cardRefs.current[0] = el)}
+            className="cyber-metric-card accent-cyan"
+            onMouseMove={(e) => handleCardMouseMove(e, 0)}
+            onMouseLeave={() => handleCardMouseLeave(0)}
+          >
+            <div className="card-top-row">
+              <span className="card-index-kicker">01 // REPOSITORIES</span>
+              <span className="card-badge-pill cyan">MONITORED</span>
             </div>
-            <div className="metric-value">
-              {metrics.totalRepos}
+            <div>
+              <p className="card-title-label">Connected Repos</p>
+              <div className="card-numeric-display">
+                <span className="card-big-num">{metrics.totalRepos}</span>
+              </div>
             </div>
-            <div className="metric-caption">
-              {metrics.totalRepos === 1 ? '1 active repository' : `${metrics.totalRepos} active repositories`}
-            </div>
+            <p className="card-caption-text">
+              {metrics.totalRepos === 1 ? '1 active repository linked' : `${metrics.totalRepos} active repositories linked`}
+            </p>
           </div>
 
           {/* Metric 2: Reviews Completed */}
-          <div className="overview-metric-card animate-fade-in">
-            <div className="metric-header">
-              <span className="metric-title">Reviews Completed</span>
-              <span className="metric-icon-wrap primary">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="9 11 12 14 22 4" />
-                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-                </svg>
-              </span>
+          <div
+            ref={(el) => (cardRefs.current[1] = el)}
+            className="cyber-metric-card accent-violet"
+            onMouseMove={(e) => handleCardMouseMove(e, 1)}
+            onMouseLeave={() => handleCardMouseLeave(1)}
+          >
+            <div className="card-top-row">
+              <span className="card-index-kicker">02 // PIPELINE</span>
+              <span className="card-badge-pill violet">EVALUATED</span>
             </div>
-            <div className="metric-value">
-              {metrics.completedReviews}
+            <div>
+              <p className="card-title-label">Reviews Completed</p>
+              <div className="card-numeric-display">
+                <span className="card-big-num">{metrics.completedReviews}</span>
+              </div>
             </div>
-            <div className="metric-caption">
-              {metrics.completedReviews > 0 ? 'Full AST & rules evaluated' : 'No review runs yet'}
-            </div>
+            <p className="card-caption-text">
+              {metrics.completedReviews > 0 ? 'Full AST & rules evaluated' : 'No review runs executed yet'}
+            </p>
           </div>
 
           {/* Metric 3: Open Findings */}
-          <div className="overview-metric-card animate-fade-in">
-            <div className="metric-header">
-              <span className="metric-title">Open Findings</span>
-              <span className="metric-icon-wrap warning">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" y1="8" x2="12" y2="12" />
-                  <line x1="12" y1="16" x2="12.01" y2="16" />
-                </svg>
-              </span>
+          <div
+            ref={(el) => (cardRefs.current[2] = el)}
+            className="cyber-metric-card accent-amber"
+            onMouseMove={(e) => handleCardMouseMove(e, 2)}
+            onMouseLeave={() => handleCardMouseLeave(2)}
+          >
+            <div className="card-top-row">
+              <span className="card-index-kicker">03 // ANOMALIES</span>
+              <span className="card-badge-pill amber">ACTIVE FLAGS</span>
             </div>
-            <div className="metric-value">
-              {metrics.openFindings}
+            <div>
+              <p className="card-title-label">Open Findings</p>
+              <div className="card-numeric-display">
+                <span className="card-big-num">{metrics.openFindings}</span>
+              </div>
             </div>
-            <div className="metric-caption">Across all monitored branches</div>
+            <p className="card-caption-text">Across all monitored branches & PRs</p>
           </div>
 
           {/* Metric 4: Critical Findings */}
-          <div className="overview-metric-card animate-fade-in">
-            <div className="metric-header">
-              <span className="metric-title">Critical Findings</span>
-              <span className={`metric-icon-wrap ${metrics.criticalFindings > 0 ? 'danger' : 'success'}`}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polygon points="12 2 2 22 22 22" />
-                  <line x1="12" y1="9" x2="12" y2="13" />
-                  <line x1="12" y1="17" x2="12.01" y2="17" />
-                </svg>
+          <div
+            ref={(el) => (cardRefs.current[3] = el)}
+            className="cyber-metric-card accent-emerald"
+            onMouseMove={(e) => handleCardMouseMove(e, 3)}
+            onMouseLeave={() => handleCardMouseLeave(3)}
+          >
+            <div className="card-top-row">
+              <span className="card-index-kicker">04 // ZERO-DAY SHIELD</span>
+              <span className="card-badge-pill emerald">
+                {metrics.criticalFindings > 0 ? 'ATTENTION' : 'CLEAN'}
               </span>
             </div>
-            <div className="metric-value">
-              {metrics.criticalFindings}
+            <div>
+              <p className="card-title-label">Critical Findings</p>
+              <div className="card-numeric-display">
+                <span className="card-big-num">{metrics.criticalFindings}</span>
+              </div>
             </div>
-            <div className="metric-caption">
-              {metrics.criticalFindings > 0 ? 'Immediate remediation required' : 'Zero blocking zero-days'}
-            </div>
+            <p className="card-caption-text">
+              {metrics.criticalFindings > 0 ? 'Immediate remediation required' : 'Zero blocking vulnerabilities'}
+            </p>
           </div>
         </div>
       )}
 
-      {/* Main Overview Section: Recent Reviews */}
+      {/* 3. Main Overview Section: Recent Reviews or Creative AST Radar Matrix */}
       <div className="overview-section-card animate-fade-in">
         <div className="section-card-header">
           <div>
-            <h2 className="section-title">Recent Reviews</h2>
-            <p className="section-sub">Latest autonomous code reviews and security scans</p>
+            <h2 className="section-title">Autonomous Code Reviews</h2>
+            <p className="section-sub">Latest repository audits, AST security scans & inline diffs</p>
           </div>
           {recentJobs.length > 0 && (
             <button
@@ -162,38 +246,88 @@ export default function OverviewView({
             )}
           </div>
         ) : recentJobs.length === 0 ? (
-          /* Intentional Empty State */
-          <div className="intentional-empty-state">
-            <div className="empty-state-icon">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 14 14" />
-              </svg>
+          /* Creative Autonomous AST Audit Matrix Empty State */
+          <div className="ast-radar-matrix-container">
+            {/* Terminal Window Header */}
+            <div className="matrix-terminal-topbar">
+              <div className="matrix-window-dots">
+                <span className="dot-red" />
+                <span className="dot-yellow" />
+                <span className="dot-green" />
+              </div>
+              <span className="matrix-route-path">ast://nodemind.kernel/realtime-radar</span>
+              <span className="matrix-state-tag">AWAITING COMMITS</span>
             </div>
-            <h3 className="empty-state-title">No reviews yet</h3>
-            <p className="empty-state-desc">
-              {repositories.length === 0
-                ? 'Connect your first GitHub repository to trigger automated security audits, bug risk detection, and quality scores.'
-                : 'You have connected repositories ready for inspection. Run your first review now.'}
-            </p>
-            {repositories.length === 0 ? (
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={onOpenConnectModal}
-              >
-                Connect your first repository →
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => onTriggerReview(repositories[0])}
-                disabled={triggeringReviewId === repositories[0].id}
-              >
-                {triggeringReviewId === repositories[0].id ? 'Analyzing...' : `Run Review on ${repositories[0].name} ▶`}
-              </button>
-            )}
+
+            {/* Radar Centerpiece */}
+            <div className="matrix-hero-body">
+              <div className="radar-orb-visual">
+                <div className="radar-ring ring-1" />
+                <div className="radar-ring ring-2" />
+                <div className="radar-ring ring-3" />
+                <div className="radar-sweep-beam" />
+                <div className="radar-center-core">
+                  <div className="core-pulse-inner" />
+                </div>
+                <div className="radar-node-dot node-1" />
+                <div className="radar-node-dot node-2" />
+                <div className="radar-node-dot node-3" />
+              </div>
+
+              <div className="matrix-kicker-meta">// ZERO-CODE PERSISTENCE · HEURISTIC KERNEL</div>
+              <h3 className="matrix-title-main">Autonomous Review Pipeline Standby</h3>
+              <p className="matrix-desc-copy">
+                {repositories.length === 0
+                  ? 'Connect any public or private GitHub repository to trigger automated line-by-line diff patches, CWE risk detection, and architectural boundaries scoring.'
+                  : `You have ${repositories.length} connected repository ready for inspection. Launch an autonomous AST review below.`}
+              </p>
+
+              <div className="matrix-cta-actions-row">
+                <button
+                  type="button"
+                  className="matrix-btn-connect-primary"
+                  onClick={onOpenConnectModal}
+                >
+                  <span>Connect Repository</span>
+                  <span>→</span>
+                </button>
+
+                {repositories.length > 0 ? (
+                  <button
+                    type="button"
+                    className="matrix-btn-demo-sample"
+                    onClick={() => onTriggerReview(repositories[0])}
+                    disabled={triggeringReviewId === repositories[0].id}
+                  >
+                    <span>{triggeringReviewId === repositories[0].id ? 'Analyzing...' : `Run Review on ${repositories[0].name} ▶`}</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="matrix-btn-demo-sample"
+                    onClick={() => onNavigateToTab('repositories')}
+                  >
+                    <span>Explore Repositories ↗</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Streaming Terminal Log Preview */}
+              <div className="matrix-terminal-console-footer">
+                <div className="terminal-log-line active">
+                  <span className="terminal-tag-success">[NODE_01]</span>
+                  <span>AST Engine v2.4 initialized in ephemeral memory buffer.</span>
+                </div>
+                <div className="terminal-log-line active">
+                  <span className="terminal-tag-info">[RULES]</span>
+                  <span>Loaded 142 OWASP CWE rules · Cryptographic decay analyzer armed.</span>
+                </div>
+                <div className="terminal-log-line">
+                  <span className="terminal-tag-warn">[STATUS]</span>
+                  <span>Awaiting incoming webhook push or manual commit trigger.</span>
+                </div>
+              </div>
+            </div>
           </div>
         ) : (
           /* Recent Reviews Table */
@@ -245,19 +379,16 @@ export default function OverviewView({
                               {job.high_count} high
                             </span>
                           )}
-                          {job.critical_count === 0 && job.high_count === 0 && (
+                          {totalFindings === 0 && (
                             <span className="severity-badge-mini passed">
-                              {totalFindings} issues
+                              Clean ✓
                             </span>
                           )}
                         </div>
                       </td>
                       <td className="cell-status">
-                        <span className={`status-pill ${job.status}`}>
-                          {job.status === 'completed' && <span className="status-dot green" />}
-                          {job.status === 'running' && <span className="status-dot amber pulse" />}
-                          {job.status === 'failed' && <span className="status-dot red" />}
-                          {job.status === 'queued' && <span className="status-dot gray" />}
+                        <span className={`status-pill-badge ${job.status}`}>
+                          <span className={`status-dot ${job.status === 'completed' ? 'green' : job.status === 'failed' ? 'red' : 'amber'}`} />
                           {job.status}
                         </span>
                       </td>
@@ -268,12 +399,9 @@ export default function OverviewView({
                         <button
                           type="button"
                           className="btn btn-secondary btn-xs"
-                          onClick={() => {
-                            if (onSelectReview) onSelectReview(job.id)
-                            navigate(`/reviews/${job.id}`)
-                          }}
+                          onClick={() => onSelectReview(job.id)}
                         >
-                          Inspect →
+                          View Diff ↗
                         </button>
                       </td>
                     </tr>
@@ -283,17 +411,6 @@ export default function OverviewView({
             </table>
           </div>
         )}
-      </div>
-
-      {/* Developer CLI Helper */}
-      <div className="overview-cli-box animate-fade-in">
-        <div className="cli-box-header">
-          <span className="cli-box-title">CLI Autonomous Review Command</span>
-          <span className="cli-box-badge">Local or CI/CD Pipeline</span>
-        </div>
-        <div className="cli-box-code">
-          <code>npx code-review-agent@latest scan --repo {repositories[0]?.full_name || 'owner/repository'}</code>
-        </div>
       </div>
     </div>
   )

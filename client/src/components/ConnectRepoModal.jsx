@@ -359,7 +359,7 @@ export default function ConnectRepoModal({ isOpen, onClose, onRepositoryConnecte
               </div>
               <h3 className="success-title">Repository Connected!</h3>
               <p className="success-desc">
-                <strong>{createdRepo?.full_name || validatedData?.parsed?.fullName}</strong> is now linked to your Code Review Agent account.
+                <strong>{createdRepo?.full_name || validatedData?.parsed?.fullName}</strong> is now linked to your NodeMind account.
               </p>
               <div className="success-details-card">
                 <div className="detail-row">

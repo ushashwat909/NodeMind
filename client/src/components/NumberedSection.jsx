@@ -82,7 +82,7 @@ export default function NumberedSection() {
             <span className="meta-label">FOUR-STAGE AUDITING PIPELINE</span>
           </div>
           <h2 className="numbered-main-title">
-            HOW CODE REVIEW AGENT
+            HOW NODEMIND
             <br />
             EXAMINES YOUR SOURCE.
           </h2>

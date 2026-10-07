@@ -152,7 +152,19 @@ export function pageEnter(target, options = {}) {
   return gsap.fromTo(
     target,
     { opacity: 0, y },
-    { opacity: 1, y: 0, duration, delay, ease, onComplete, ...rest }
+    {
+      opacity: 1,
+      y: 0,
+      duration,
+      delay,
+      ease,
+      clearProps: 'transform',
+      onComplete: () => {
+        gsap.set(target, { clearProps: 'transform' })
+        if (typeof onComplete === 'function') onComplete()
+      },
+      ...rest,
+    }
   )
 }
 

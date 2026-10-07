@@ -140,7 +140,7 @@ export default function Hero() {
 
         {/* Supporting Developer-Focused Subtitle */}
         <p className="hero-subtext" ref={descRef}>
-          Code Review Agent performs deep AST-level inspection across pull requests,
+          NodeMind performs deep AST-level inspection across pull requests,
           tracing async race conditions, state mutations, and security vulnerabilities
           to deliver actionable inline fixes with zero review fatigue.
         </p>

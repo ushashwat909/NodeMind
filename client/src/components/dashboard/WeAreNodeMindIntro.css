@@ -1,0 +1,348 @@
+/* ==========================================================================
+   WE ARE NODEMIND INTRO — MONUMENTAL 3D EDITORIAL TRANSITION
+   Inspired by Sadumedia.com tactile papercraft / 3D faceted typography
+   ========================================================================== */
+
+.we-are-nodemind-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background-color: #08090d;
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  user-select: none;
+  cursor: pointer;
+  padding: 2.5rem 3rem;
+  box-sizing: border-box;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+  will-change: opacity, transform;
+}
+
+/* Background Cyber Grid & Ambience */
+.intro-cyber-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.intro-ambient-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  height: 500px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 107, 74, 0.12) 0%,
+    rgba(56, 189, 248, 0.06) 45%,
+    transparent 75%
+  );
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.intro-scanline {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0, 0, 0, 0.25) 51%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+/* Top HUD Bar */
+.intro-hud-top {
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.hud-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: #94a3b8;
+}
+
+.hud-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  animation: introDotPulse 1.8s infinite;
+}
+
+@keyframes introDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.hud-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+}
+
+.hud-session-tag {
+  color: #cbd5e1;
+  letter-spacing: 0.08em;
+}
+
+.hud-status-badge {
+  color: #ff6b4a;
+  background: rgba(255, 107, 74, 0.12);
+  border: 1px solid rgba(255, 107, 74, 0.3);
+  padding: 0.2rem 0.55rem;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+}
+
+/* Center Stage */
+.intro-center-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  z-index: 10;
+  width: 100%;
+  max-width: 1400px;
+  margin: auto 0;
+}
+
+/* Sadumedia Diamond Emblem */
+.sadumedia-emblem {
+  display: flex;
+  justify-content: center;
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 20px rgba(255, 107, 74, 0.25));
+  margin-bottom: 0.5rem;
+  transform-style: preserve-3d;
+}
+
+/* 3D Typographic Scene */
+.sadumedia-3d-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.typo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+
+.slice-space {
+  width: clamp(1.2rem, 3vw, 3rem);
+  display: inline-block;
+}
+
+/* Monumental 3D Letter Slice Cards */
+.letter-slice-card {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  transform: perspective(900px) rotateY(var(--tilt-y)) translateZ(var(--depth-z));
+  box-shadow: 0 24px 48px var(--shadow-color);
+  margin: 0 -0.015em;
+  will-change: transform, opacity;
+  transition: transform 0.25s ease-out;
+}
+
+.letter-char {
+  font-family: 'Anton', 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(4.5rem, 14.5vw, 12.8rem);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+  text-transform: uppercase;
+  display: block;
+  text-shadow:
+    0 1px 0 #cccccc,
+    0 2px 0 #b3b3b3,
+    0 3px 0 #999999,
+    0 4px 0 #808080,
+    0 6px 1px rgba(0, 0, 0, 0.2),
+    0 0 10px rgba(0, 0, 0, 0.3),
+    0 12px 24px rgba(0, 0, 0, 0.7);
+}
+
+/* Subtle facet edge lighting creating papercraft / 3D extrusion fold */
+.letter-facet-highlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0.05) 40%,
+    transparent 100%
+  );
+  opacity: 0.65;
+  mix-blend-mode: overlay;
+}
+
+.letter-facet-shadow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 35%;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(0, 0, 0, 0.45)
+  );
+  opacity: 0.85;
+}
+
+.is-nodemind-card .letter-char {
+  color: #f1f5f9;
+}
+
+/* Tagline Statement under the letters */
+.intro-tagline-statement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: clamp(0.68rem, 1.1vw, 0.82rem);
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+  margin-top: 1.25rem;
+  text-align: center;
+}
+
+.tagline-segment {
+  color: #cbd5e1;
+}
+
+.tagline-sep {
+  color: #ff6b4a;
+  font-weight: 700;
+}
+
+/* Bottom HUD Bar */
+.intro-hud-bottom {
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  z-index: 10;
+}
+
+.hud-bottom-details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hud-mono-text {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.72rem;
+  color: #64748b;
+  letter-spacing: 0.08em;
+}
+
+/* Enter Workspace Glowing CTA */
+.intro-enter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #ffffff;
+  color: #08080c;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.85rem 2.2rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 28px rgba(255, 255, 255, 0.25), 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.intro-enter-btn:hover {
+  background: #ff6b4a;
+  color: #ffffff;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 35px rgba(255, 107, 74, 0.5), 0 14px 35px rgba(0, 0, 0, 0.7);
+}
+
+.btn-arrow-glow {
+  transition: transform 0.2s ease;
+}
+
+.intro-enter-btn:hover .btn-arrow-glow {
+  transform: translateX(4px);
+}
+
+/* Progress bar track */
+.intro-progress-bar-track {
+  width: 220px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.intro-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff6b4a, #38bdf8);
+  transition: width 0.05s linear;
+}
+
+@media (max-width: 768px) {
+  .we-are-nodemind-overlay {
+    padding: 1.5rem 1rem;
+  }
+  .hud-meta-right {
+    display: none;
+  }
+  .letter-char {
+    font-size: 14vw;
+  }
+  .intro-tagline-statement {
+    display: none;
+  }
+}

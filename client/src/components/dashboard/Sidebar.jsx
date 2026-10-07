@@ -108,7 +108,7 @@ export default function Sidebar({
       <aside className={`dashboard-sidebar ${isOpen ? 'open' : ''}`} ref={sidebarRef}>
         {/* Brand Area */}
         <div className="sidebar-brand-area">
-          <Link to="/" className="sidebar-brand-link" title="Code Review Agent Home">
+          <Link to="/" className="sidebar-brand-link" title="NodeMind Home">
             <div className="sidebar-logo-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <polyline points="16 18 22 12 16 6" />
@@ -116,8 +116,8 @@ export default function Sidebar({
               </svg>
             </div>
             <div className="sidebar-brand-text">
-              <span className="sidebar-brand-title">Code Review</span>
-              <span className="sidebar-brand-sub">Agent</span>
+              <span className="sidebar-brand-title">NodeMind</span>
+              <span className="sidebar-brand-sub">Platform</span>
             </div>
           </Link>
           <span className="sidebar-badge">v1.2</span>

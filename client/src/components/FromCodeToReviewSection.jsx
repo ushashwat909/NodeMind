@@ -14,7 +14,7 @@ const STAGES = [
     id: 'connect',
     title: 'CONNECT',
     subtitle: 'VCS Repository Integration',
-    desc: 'Point to any public or private GitHub repository. Code Review Agent discovers branches, commits, and pull requests via encrypted webhooks with zero persistent disk cloning.',
+    desc: 'Point to any public or private GitHub repository. NodeMind discovers branches, commits, and pull requests via encrypted webhooks with zero persistent disk cloning.',
     tag: 'GITHUB REST & GRAPHQL',
     stageVisual: {
       header: 'vcs://github.com/enterprise/core-api',

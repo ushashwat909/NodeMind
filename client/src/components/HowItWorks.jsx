@@ -8,7 +8,7 @@ const steps = [
     title: 'Connect Repository',
     subtitle: 'Zero-config GitHub & GitLab integration',
     description:
-      'Authorize the Code Review Agent GitHub App or plug our 8-line workflow into your CI pipeline. Scans pull requests immediately upon creation.',
+      'Authorize the NodeMind GitHub App or plug our 8-line workflow into your CI pipeline. Scans pull requests immediately upon creation.',
     tags: ['GitHub App', 'GitLab CI', 'CLI Webhooks'],
     codeSnippet: 'git: pull_request.opened -> trigger AST scan',
     icon: (
@@ -101,7 +101,7 @@ export default function HowItWorks() {
           </span>
           <h2 className="section-heading">Three steps from commit to verified code.</h2>
           <p className="section-description">
-            No bloated configuration files. No noisy false alarms. Code Review Agent hooks straight into your existing review cycle.
+            No bloated configuration files. No noisy false alarms. NodeMind hooks straight into your existing review cycle.
           </p>
         </div>
 

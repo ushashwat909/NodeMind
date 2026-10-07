@@ -11,7 +11,20 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (mainRef.current) {
-      pageEnter(mainRef.current, { y: 8, duration: 0.25 })
+      if (location.pathname === '/') {
+        mainRef.current.style.transform = ''
+        return
+      }
+      pageEnter(mainRef.current, {
+        y: 8,
+        duration: 0.25,
+        clearProps: 'transform',
+        onComplete: () => {
+          if (mainRef.current) {
+            mainRef.current.style.transform = ''
+          }
+        },
+      })
     }
   }, [location.pathname])
 

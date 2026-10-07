@@ -78,9 +78,9 @@ export default function EditorialNavigation() {
       <header className={`editorial-nav-header ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="editorial-nav-container">
           {/* Brand */}
-          <Link to="/" className="editorial-nav-brand" aria-label="Code Review Agent Home">
+          <Link to="/" className="editorial-nav-brand" aria-label="NodeMind Home">
             <span className="brand-dot-indicator" />
-            <span className="brand-title-primary">CODE REVIEW AGENT</span>
+            <span className="brand-title-primary">NODEMIND</span>
             <span className="brand-meta-code">/ AG-2.4</span>
           </Link>
 
@@ -171,7 +171,7 @@ export default function EditorialNavigation() {
         <div className="mobile-overlay-header">
           <div className="overlay-brand">
             <span className="brand-dot-indicator" />
-            <span className="brand-title-primary">CODE REVIEW AGENT</span>
+            <span className="brand-title-primary">NODEMIND</span>
           </div>
           <button
             type="button"
@@ -249,7 +249,7 @@ export default function EditorialNavigation() {
               className="editorial-btn-primary full-width"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>{session ? 'OPEN WORKSPACE' : 'LAUNCH CODE REVIEW AGENT'}</span>
+              <span>{session ? 'OPEN WORKSPACE' : 'LAUNCH NODEMIND'}</span>
               <span className="btn-arrow-mark">→</span>
             </Link>
           </div>

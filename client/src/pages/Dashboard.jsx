@@ -13,6 +13,7 @@ import SettingsView from '@/components/dashboard/SettingsView'
 import ConnectRepoModal from '@/components/ConnectRepoModal'
 import ReviewProgressModal from '@/components/common/ReviewProgressModal'
 import StartReviewModal from '@/components/dashboard/StartReviewModal'
+import WeAreNodeMindIntro from '@/components/dashboard/WeAreNodeMindIntro'
 import { gsap, prefersReducedMotion } from '@/animations/gsap'
 import './Dashboard.css'
 
@@ -31,6 +32,20 @@ export default function Dashboard() {
   const [isSyncingGithub, setIsSyncingGithub] = useState(false)
   const [githubSyncBanner, setGithubSyncBanner] = useState(null)
   const hasAutoSyncedRef = useRef(false)
+
+  // Iconic "WE ARE NODEMIND" 3D Intro Sequence State (sadumedia.com inspired)
+  const [showIntro, setShowIntro] = useState(() => {
+    return sessionStorage.getItem('nodemind_intro_dismissed') !== 'true'
+  })
+
+  const handleCloseIntro = useCallback(() => {
+    setShowIntro(false)
+    sessionStorage.setItem('nodemind_intro_dismissed', 'true')
+  }, [])
+
+  const handleTriggerIntro = useCallback(() => {
+    setShowIntro(true)
+  }, [])
 
   // Real Database Entities State
   const [profile, setProfile] = useState(null)
@@ -326,6 +341,7 @@ export default function Dashboard() {
           loadingData={loadingData}
           profile={profile}
           user={user}
+          onShowIntro={handleTriggerIntro}
         />
 
         {/* Live GitHub Synchronization Banner */}
@@ -385,6 +401,8 @@ export default function Dashboard() {
               triggeringReviewId={triggeringReviewId}
               onSelectReview={(id) => setSelectedReviewId(id)}
               onNavigateToTab={setActiveTab}
+              onShowIntro={handleTriggerIntro}
+              userName={profile?.display_name || user?.email?.split('@')[0] || 'Architect'}
             />
           )}
 
@@ -464,6 +482,13 @@ export default function Dashboard() {
           onRetry={() => handleExecuteReview(reviewProgressState.repo, reviewProgressState.repo?.default_branch)}
         />
       )}
+
+      {/* Iconic 3D "WE ARE NODEMIND" Intro Sequence (sadumedia.com inspired) */}
+      <WeAreNodeMindIntro
+        isOpen={showIntro}
+        onClose={handleCloseIntro}
+        userName={profile?.display_name || user?.email?.split('@')[0] || 'Architect'}
+      />
     </div>
   )
 }

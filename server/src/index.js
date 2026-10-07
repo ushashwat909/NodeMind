@@ -16,11 +16,10 @@ app.use(securityHeaders)
 // 2. CORS (allow configured client origin and local development origins with credentials)
 const isAllowedOrigin = (origin) => {
   if (!origin) return true
+  // In development, allow all origins (local network devices, other laptops, mobile, localhost, tunnels)
+  if (!config.isProduction) return true
   if (origin === config.clientUrl) return true
   if (/^https:\/\/.*\.netlify\.app$/.test(origin)) return true
-  if (!config.isProduction && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
-    return true
-  }
   return false
 }
 

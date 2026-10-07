@@ -15,7 +15,7 @@ export default function AnimatedCTA() {
   const headlineRef = useRef(null)
 
   const handleCopy = () => {
-    navigator.clipboard.writeText('npx @codereview/agent review .')
+    navigator.clipboard.writeText('npx nodemind review .')
     setCopiedCli(true)
     setTimeout(() => setCopiedCli(false), 2200)
   }
@@ -45,7 +45,7 @@ export default function AnimatedCTA() {
       <div className="editorial-cta-container">
         <div className="cta-meta-top">
           <span className="cta-dot-green" />
-          <span className="cta-meta-label">CODE REVIEW AGENT // RUNTIME ENGINE</span>
+          <span className="cta-meta-label">NODEMIND // RUNTIME ENGINE</span>
         </div>
 
         <h2 ref={headlineRef} className="cta-poster-headline">
@@ -62,7 +62,7 @@ export default function AnimatedCTA() {
 
         <div className="cta-actions-wrap">
           <Link to="/dashboard" className="cta-main-btn">
-            <span>LAUNCH CODE REVIEW AGENT</span>
+            <span>LAUNCH NODEMIND</span>
             <span className="cta-btn-arrow">→</span>
           </Link>
 
@@ -74,7 +74,7 @@ export default function AnimatedCTA() {
             aria-label="Copy CLI install command"
           >
             <span className="cli-dollar">$</span>
-            <span className="cli-line">npx @codereview/agent review .</span>
+            <span className="cli-line">npx nodemind review .</span>
             <span className="cli-status-tag">{copiedCli ? 'COPIED' : 'COPY'}</span>
           </button>
         </div>

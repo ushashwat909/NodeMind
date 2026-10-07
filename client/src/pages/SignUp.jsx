@@ -160,17 +160,8 @@ export default function SignUp() {
 
     if (res.success) {
       setIsSuccess(true)
-      if (res.data?.session) {
-        setSuccessMsg('Account created and verified! Redirecting to console...')
-        setTimeout(() => navigate('/dashboard', { replace: true }), 900)
-      } else if (res.data?.user?.identities?.length === 0) {
-        setErrorMsg('An account with this email already exists. Please sign in instead.')
-        setSubmitting(false)
-        setIsSuccess(false)
-      } else {
-        setSuccessMsg('Account created successfully! Check your email to confirm your address, then sign in.')
-        setSubmitting(false)
-      }
+      setSuccessMsg('Account created! Welcome to your dashboard...')
+      setTimeout(() => navigate('/dashboard', { replace: true }), 600)
     } else {
       setErrorMsg(res.error || 'Registration failed. Please check your details.')
       setSubmitting(false)
@@ -224,7 +215,7 @@ export default function SignUp() {
                   <circle cx="12" cy="12" r="2.2" fill="currentColor" />
                 </svg>
               </div>
-              <span className="editorial-brand-name">Code Review Agent</span>
+              <span className="editorial-brand-name">NodeMind</span>
               <span className="editorial-brand-tag">REGISTER // 002</span>
             </Link>
 

@@ -61,7 +61,7 @@ export default function Navbar() {
     <header className={`navbar-header ${scrolled ? 'scrolled' : ''}`} ref={navRef}>
       <div className="container navbar-container">
         {/* Brand */}
-        <Link to="/" className="navbar-brand" aria-label="Code Review Agent Home">
+        <Link to="/" className="navbar-brand" aria-label="NodeMind Home">
           <div className="brand-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="16 18 22 12 16 6"></polyline>
@@ -70,7 +70,7 @@ export default function Navbar() {
             </svg>
           </div>
           <div className="brand-text">
-            <span className="brand-name">Code Review Agent</span>
+            <span className="brand-name">NodeMind</span>
             <span className="brand-badge">v0.1</span>
           </div>
         </Link>

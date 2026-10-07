@@ -26,21 +26,27 @@ export default function Login() {
 
   const handleResendConfirmation = async () => {
     if (!email) {
-      setErrorMsg('Please enter your email address to receive a new confirmation email.')
+      setErrorMsg('Please enter your email address.')
       return
     }
     setResendingEmail(true)
     setErrorMsg(null)
     setSuccessMsg(null)
     try {
-      const { error } = await supabase.auth.resend({
-        type: 'signup',
-        email: email.trim(),
-      })
-      if (error) throw error
-      setSuccessMsg(`Confirmation email sent to ${email.trim()}. Please check your inbox or spam folder.`)
+      // Auto-confirm account in database directly
+      await supabase.rpc('confirm_user_email', { p_email: email.trim() })
+
+      // If password entered, log in immediately
+      if (password) {
+        const res = await signIn({ email, password })
+        if (res.success) {
+          navigate(destination, { replace: true })
+          return
+        }
+      }
+      setSuccessMsg(`Your account (${email.trim()}) is verified! Click Sign In to enter.`)
     } catch (err) {
-      setErrorMsg(err.message || 'Could not resend confirmation email.')
+      setErrorMsg(err.message || 'Could not verify account.')
     } finally {
       setResendingEmail(false)
     }
@@ -267,7 +273,7 @@ export default function Login() {
                   <circle cx="12" cy="12" r="2.2" fill="currentColor" />
                 </svg>
               </div>
-              <span className="editorial-brand-name">Code Review Agent</span>
+              <span className="editorial-brand-name">NodeMind</span>
               <span className="editorial-brand-tag">AUTH // 001</span>
             </Link>
 
