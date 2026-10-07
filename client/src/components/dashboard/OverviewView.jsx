@@ -80,20 +80,20 @@ export default function OverviewView({
       {/* 1. Command Telemetry Banner */}
       <div className="overview-command-banner animate-fade-in">
         <div className="banner-telemetry-left">
-          <span className="banner-meta-tag">// MISSION CONTROL · US-EAST-SECURE</span>
+          <span className="banner-meta-tag">Code Review & Security Analysis</span>
           <h1 className="banner-heading-title">
-            WORKSPACE COMMAND <span className="banner-user-greet">// {userName.toUpperCase()}</span>
+            Overview <span className="banner-user-greet">· {userName}</span>
           </h1>
           <div className="banner-badges-strip">
             <span className="telemetry-chip">
               <span className="chip-dot-green" />
-              AST KERNEL: V2.4 ONLINE
+              AST Engine Active
             </span>
             <span className="telemetry-chip">
-              🛡️ ZERO RETENTION: EPHEMERAL RAM
+              🛡️ Zero-Code Retention
             </span>
             <span className="telemetry-chip">
-              ⚡ 142 OWASP HEURISTICS: ARMED
+              ⚡ OWASP Top 10 Rules Active
             </span>
           </div>
         </div>
@@ -107,7 +107,7 @@ export default function OverviewView({
               title="Experience the 3D 'WE ARE NODEMIND' cinematic intro"
             >
               <span>⚡</span>
-              <span>WE ARE NODEMIND</span>
+              <span>We Are NodeMind</span>
             </button>
           )}
 
@@ -134,7 +134,7 @@ export default function OverviewView({
             onMouseLeave={() => handleCardMouseLeave(0)}
           >
             <div className="card-top-row">
-              <span className="card-index-kicker">01 // REPOSITORIES</span>
+              <span className="card-index-kicker">Repositories</span>
               <span className="card-badge-pill cyan">MONITORED</span>
             </div>
             <div>
@@ -156,8 +156,8 @@ export default function OverviewView({
             onMouseLeave={() => handleCardMouseLeave(1)}
           >
             <div className="card-top-row">
-              <span className="card-index-kicker">02 // PIPELINE</span>
-              <span className="card-badge-pill violet">EVALUATED</span>
+              <span className="card-index-kicker">Code Reviews</span>
+              <span className="card-badge-pill violet">COMPLETED</span>
             </div>
             <div>
               <p className="card-title-label">Reviews Completed</p>
@@ -178,8 +178,8 @@ export default function OverviewView({
             onMouseLeave={() => handleCardMouseLeave(2)}
           >
             <div className="card-top-row">
-              <span className="card-index-kicker">03 // ANOMALIES</span>
-              <span className="card-badge-pill amber">ACTIVE FLAGS</span>
+              <span className="card-index-kicker">Open Findings</span>
+              <span className="card-badge-pill amber">ACTIVE</span>
             </div>
             <div>
               <p className="card-title-label">Open Findings</p>
@@ -198,7 +198,7 @@ export default function OverviewView({
             onMouseLeave={() => handleCardMouseLeave(3)}
           >
             <div className="card-top-row">
-              <span className="card-index-kicker">04 // ZERO-DAY SHIELD</span>
+              <span className="card-index-kicker">Critical Blockers</span>
               <span className="card-badge-pill emerald">
                 {metrics.criticalFindings > 0 ? 'ATTENTION' : 'CLEAN'}
               </span>
@@ -255,7 +255,7 @@ export default function OverviewView({
                 <span className="dot-yellow" />
                 <span className="dot-green" />
               </div>
-              <span className="matrix-route-path">ast://nodemind.kernel/realtime-radar</span>
+              <span className="matrix-route-path">nodemind.engine/security-radar</span>
               <span className="matrix-state-tag">AWAITING COMMITS</span>
             </div>
 
@@ -274,7 +274,7 @@ export default function OverviewView({
                 <div className="radar-node-dot node-3" />
               </div>
 
-              <div className="matrix-kicker-meta">// ZERO-CODE PERSISTENCE · HEURISTIC KERNEL</div>
+              <div className="matrix-kicker-meta">Continuous Security & Code Quality Scanner</div>
               <h3 className="matrix-title-main">Autonomous Review Pipeline Standby</h3>
               <p className="matrix-desc-copy">
                 {repositories.length === 0

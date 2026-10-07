@@ -216,7 +216,7 @@ export default function SignUp() {
                 </svg>
               </div>
               <span className="editorial-brand-name">NodeMind</span>
-              <span className="editorial-brand-tag">REGISTER // 002</span>
+              <span className="editorial-brand-tag">Platform</span>
             </Link>
 
             <div className="editorial-status-pill">
@@ -227,7 +227,7 @@ export default function SignUp() {
 
           <div className="editorial-headline-container">
             <div className="editorial-kicker" ref={kickerRef}>
-              <span>// 002 — ENGINEERING AT VELOCITY</span>
+              <span>ENGINEERING AT VELOCITY</span>
             </div>
 
             <h1 className="editorial-display-heading" ref={headlineRef}>
@@ -287,7 +287,7 @@ export default function SignUp() {
               <span>Back to overview</span>
             </Link>
 
-            <span className="auth-session-tag">PROVISION // ACCOUNT</span>
+            <span className="auth-session-tag">New Account</span>
           </nav>
 
           <div className="auth-form-wrapper">

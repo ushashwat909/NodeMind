@@ -504,24 +504,6 @@ export default function ReviewResultsPage() {
                     </button>
                   </div>
                 </div>
-
-                <div className="mobile-finding-summary-block">
-                  <div className="mobile-finding-badges">
-                    <span className={`finding-sev-badge sev-badge-${selectedFinding.severity?.toLowerCase()}`}>
-                      {selectedFinding.severity?.toUpperCase()}
-                    </span>
-                    <span className="finding-cat-pill">{selectedFinding.category}</span>
-                    {selectedFinding.cwe_id && <span className="finding-cwe-pill">{selectedFinding.cwe_id}</span>}
-                  </div>
-                  <h3 className="mobile-finding-title">{selectedFinding.title}</h3>
-                  <div className="mobile-finding-loc">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
-                      <polyline points="13 2 13 9 20 9" />
-                    </svg>
-                    <code>{selectedFinding.file_path}:{selectedFinding.line_start}</code>
-                  </div>
-                </div>
               </div>
 
               {/* Code Viewer Panel (Code context) */}

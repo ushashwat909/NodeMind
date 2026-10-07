@@ -40,10 +40,10 @@ export default function TopBar({
           <span className="breadcrumb-current">{tabTitles[activeTab] || 'Overview'}</span>
         </div>
 
-        {/* Live Kernel Telemetry Pill */}
+        {/* Live Status Pill */}
         <div className="topbar-kernel-pill">
           <span className="kernel-dot" />
-          <span className="kernel-text">KERNEL V2.4 ONLINE</span>
+          <span className="kernel-text">Engine Active</span>
         </div>
       </div>
 
@@ -57,7 +57,7 @@ export default function TopBar({
             title="Experience the 3D 'WE ARE NODEMIND' cinematic intro"
           >
             <span className="intro-btn-lightning">⚡</span>
-            <span className="intro-btn-text">WE ARE NODEMIND</span>
+            <span className="intro-btn-text">We Are NodeMind</span>
           </button>
         )}
 

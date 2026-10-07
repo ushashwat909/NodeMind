@@ -922,6 +922,135 @@
   min-width: 0;
 }
 
+/* Container for code viewer & briefing */
+.code-viewer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* 1. At-A-Glance Finding Briefing Card */
+.finding-briefing-card {
+  background: #161b22;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 1.15rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.briefing-top-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.briefing-badge-cluster {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.briefing-badge-cluster .finding-sev-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+.briefing-badge-cluster .finding-cat-pill {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #c9d1d9;
+}
+
+.briefing-badge-cluster .finding-cwe-pill {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.15s ease;
+}
+
+.briefing-badge-cluster .finding-cwe-pill:hover {
+  background: rgba(99, 102, 241, 0.25);
+  border-color: #818cf8;
+  color: #ffffff;
+}
+
+.briefing-badge-cluster .finding-owasp-pill {
+  font-size: 0.7rem;
+  color: #8b949e;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.briefing-file-location code {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.78rem;
+  color: #58a6ff;
+  background: rgba(88, 166, 255, 0.08);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid rgba(88, 166, 255, 0.2);
+}
+
+.briefing-title-text {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+}
+
+/* Dedicated Risk & Impact Box */
+.briefing-risk-box {
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.22);
+  border-left: 3px solid #ef4444;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.risk-box-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #f87171;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.risk-box-desc {
+  margin: 0;
+  font-size: 0.84rem;
+  color: #e6edf3;
+  line-height: 1.5;
+}
+
 /* Code Viewer Panel */
 .code-viewer-panel {
   background: #161b22;
@@ -1296,6 +1425,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.diff-bar-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.diff-bar-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
 }
 
 .diff-bar-title {

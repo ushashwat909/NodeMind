@@ -247,7 +247,7 @@ export default function WeAreNodeMindIntro({ isOpen, onClose, userName = 'Archit
       <div className="intro-hud-top">
         <div className="hud-meta-left">
           <span className="hud-pulse-dot" />
-          <span className="hud-code-tag">SYSTEM // 001 · KERNEL INITIALIZED</span>
+          <span className="hud-code-tag">NodeMind · Code Review Platform</span>
         </div>
         <div className="hud-meta-right">
           <span className="hud-session-tag">WORKSPACE: {userName.toUpperCase()}</span>
@@ -320,10 +320,10 @@ export default function WeAreNodeMindIntro({ isOpen, onClose, userName = 'Archit
 
         {/* Supporting Micro-Kicker */}
         <div className="intro-tagline-statement">
-          <span className="tagline-segment">AUTONOMOUS AST AUDIT KERNEL</span>
-          <span className="tagline-sep">/</span>
+          <span className="tagline-segment">AUTONOMOUS AST AUDIT</span>
+          <span className="tagline-sep">·</span>
           <span className="tagline-segment">ZERO-CODE RETENTION</span>
-          <span className="tagline-sep">/</span>
+          <span className="tagline-sep">·</span>
           <span className="tagline-segment">REAL-TIME THREAT VERIFICATION</span>
         </div>
       </div>

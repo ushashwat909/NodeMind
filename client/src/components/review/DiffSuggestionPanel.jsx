@@ -14,7 +14,6 @@ export default function DiffSuggestionPanel({
 
   const {
     id,
-    title = 'Remediation Suggestion',
     snippet = '',
     suggested_fix = '',
     recommendation = '',
@@ -30,7 +29,7 @@ export default function DiffSuggestionPanel({
     const ctx = gsap.context(() => {
       gsap.fromTo(
         workspaceRef.current,
-        { opacity: 0.85, y: 3 },
+        { opacity: 0.88, y: 3 },
         { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' }
       )
     }, workspaceRef)
@@ -46,7 +45,7 @@ export default function DiffSuggestionPanel({
     )
   }
 
-  // Handle single line or target code from snippet
+  // Process snippet and suggested fix into lines
   const currentLines = snippet ? snippet.split('\n') : []
   const suggestedLines = suggested_fix ? suggested_fix.split('\n') : []
 
@@ -64,38 +63,43 @@ export default function DiffSuggestionPanel({
     setTimeout(() => setCopiedOriginal(false), 2000)
   }
 
+  const cweNumber = cwe_id ? cwe_id.replace(/^CWE-/i, '') : null
+
   return (
     <div className="diff-suggestion-panel">
       {/* Panel Top Header */}
       <div className="diff-panel-header">
         <div className="diff-title-group">
           <div className="diff-header-badge">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
             </svg>
-            <span>Remediation & Proposed Fix</span>
+            <span>Recommended Solution &amp; Patch</span>
           </div>
-          <span className="diff-finding-label">{title}</span>
         </div>
 
         {/* View mode toggle & Action CTA */}
         <div className="diff-controls-group">
-          <div className="diff-view-modes">
-            <button
-              type="button"
-              className={`view-mode-btn ${viewMode === 'diff' ? 'active' : ''}`}
-              onClick={() => setViewMode('diff')}
-            >
-              Unified Diff
-            </button>
-            <button
-              type="button"
-              className={`view-mode-btn ${viewMode === 'side-by-side' ? 'active' : ''}`}
-              onClick={() => setViewMode('side-by-side')}
-            >
-              Side-by-Side
-            </button>
-          </div>
+          {suggested_fix && (
+            <div className="diff-view-modes">
+              <button
+                type="button"
+                className={`view-mode-btn ${viewMode === 'diff' ? 'active' : ''}`}
+                onClick={() => setViewMode('diff')}
+                title="Unified inline diff view"
+              >
+                Unified Diff
+              </button>
+              <button
+                type="button"
+                className={`view-mode-btn ${viewMode === 'side-by-side' ? 'active' : ''}`}
+                onClick={() => setViewMode('side-by-side')}
+                title="Side-by-side comparison view"
+              >
+                Side-by-Side
+              </button>
+            </div>
+          )}
 
           {/* Status Buttons */}
           <div className="diff-status-actions">
@@ -107,10 +111,10 @@ export default function DiffSuggestionPanel({
                 disabled={updatingStatus}
                 title="Mark this finding as resolved"
               >
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
-                <span>Resolve</span>
+                <span>Mark Resolved</span>
               </button>
             ) : (
               <button
@@ -120,7 +124,7 @@ export default function DiffSuggestionPanel({
                 disabled={updatingStatus}
                 title="Reopen finding"
               >
-                Reopen
+                Reopen Issue
               </button>
             )}
 
@@ -130,7 +134,7 @@ export default function DiffSuggestionPanel({
                 className="btn btn-secondary btn-xs btn-dismiss"
                 onClick={() => onUpdateStatus && onUpdateStatus(id, 'dismissed')}
                 disabled={updatingStatus}
-                title="Dismiss finding as false positive or acceptable risk"
+                title="Dismiss finding as false positive or accepted risk"
               >
                 Dismiss
               </button>
@@ -146,14 +150,30 @@ export default function DiffSuggestionPanel({
             /* Unified Diff View */
             <div className="diff-unified-box">
               <div className="diff-box-bar">
-                <span className="diff-bar-title">Proposed Patch</span>
+                <div className="diff-bar-title-wrap">
+                  <span className="diff-bar-dot" />
+                  <span className="diff-bar-title">Proposed Patch</span>
+                </div>
                 <button
                   type="button"
                   className="btn-copy-fix"
                   onClick={handleCopyFix}
-                  title="Copy suggested replacement code"
+                  title="Copy replacement code to clipboard"
                 >
-                  {copiedFix ? '✓ Copied Fix!' : 'Copy Fix'}
+                  {copiedFix ? (
+                    <>
+                      <span>✓</span>
+                      <span>Copied Patch!</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                      </svg>
+                      <span>Copy Patch</span>
+                    </>
+                  )}
                 </button>
               </div>
 
@@ -185,7 +205,7 @@ export default function DiffSuggestionPanel({
               {/* Current Code Column */}
               <div className="side-column current">
                 <div className="side-column-header">
-                  <span className="column-title">Current Code</span>
+                  <span className="column-title">Current Vulnerable Code</span>
                   <button
                     type="button"
                     className="btn-copy-code-mini"
@@ -209,13 +229,13 @@ export default function DiffSuggestionPanel({
               {/* Suggested Code Column */}
               <div className="side-column suggested">
                 <div className="side-column-header">
-                  <span className="column-title">Suggested Code</span>
+                  <span className="column-title">Recommended Fix</span>
                   <button
                     type="button"
                     className="btn-copy-code-mini highlight"
                     onClick={handleCopyFix}
                   >
-                    {copiedFix ? '✓ Copied Fix!' : 'Copy Fix'}
+                    {copiedFix ? '✓ Copied' : 'Copy Fix'}
                   </button>
                 </div>
                 <div className="side-code-body add">
@@ -233,39 +253,37 @@ export default function DiffSuggestionPanel({
           )
         ) : (
           <div className="no-fix-callout">
-            <p>Automatic code patch is not generated for this heuristic. Please follow the guidance below.</p>
+            <p>Automated patch generation is not available for this heuristic rule. Please follow the guidance below to remediate manually.</p>
           </div>
         )}
       </div>
 
-      {/* "Why this change helps" & Explanation Section */}
+      {/* "Why this fix works" & Explanation Section */}
       <div className="why-change-helps-section">
         <h4 className="why-section-title">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="16" x2="12" y2="12" />
-            <line x1="12" y1="8" x2="12.01" y2="8" />
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
           </svg>
-          Why this change helps
+          <span>Why this fix works:</span>
         </h4>
 
-        {recommendation && (
+        {recommendation ? (
           <div className="recommendation-content-block">
             <p className="rec-text">{recommendation}</p>
           </div>
-        )}
-
-        {description && description !== recommendation && (
-          <p className="rec-subtext">{description}</p>
-        )}
+        ) : description ? (
+          <div className="recommendation-content-block">
+            <p className="rec-text">{description}</p>
+          </div>
+        ) : null}
 
         {/* References & Standards Badges */}
         {(cwe_id || owasp_category) && (
           <div className="remediation-references-row">
-            <span className="ref-label">Standards & Compliance:</span>
+            <span className="ref-label">Security Standards:</span>
             {cwe_id && (
               <a
-                href={`https://cwe.mitre.org/data/definitions/${cwe_id.replace('CWE-', '')}.html`}
+                href={`https://cwe.mitre.org/data/definitions/${cweNumber}.html`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="ref-pill cwe"
